@@ -537,3 +537,38 @@ requestAnimationFrame(render);
   if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fitV56);
   requestAnimationFrame(fitV56);
 })();
+
+;(()=>{
+  function fitHeroTitleV57(){
+    const box=document.getElementById("hero1");
+    const title=box&&box.querySelector(".hero1-title");
+    const lines=title?[...title.querySelectorAll("span")]:[];
+    if(!box||!title||!lines.length)return;
+
+    title.style.removeProperty("font-size");
+
+    requestAnimationFrame(()=>{
+      const target=box.clientWidth;
+      if(!target)return;
+
+      const base=parseFloat(getComputedStyle(title).fontSize)||72;
+      const widest=Math.max(...lines.map(el=>el.getBoundingClientRect().width),1);
+      let size=base*(target/widest);
+      title.style.setProperty("font-size",size.toFixed(3)+"px","important");
+
+      requestAnimationFrame(()=>{
+        const measured=Math.max(...lines.map(el=>el.getBoundingClientRect().width),1);
+        if(measured>0){
+          size=size*(target/measured);
+          title.style.setProperty("font-size",size.toFixed(3)+"px","important");
+        }
+      });
+    });
+  }
+
+  addEventListener("load",fitHeroTitleV57);
+  addEventListener("resize",fitHeroTitleV57);
+  addEventListener("orientationchange",()=>setTimeout(fitHeroTitleV57,260));
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fitHeroTitleV57);
+  requestAnimationFrame(fitHeroTitleV57);
+})();
