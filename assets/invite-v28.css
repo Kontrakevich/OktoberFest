@@ -343,3 +343,13 @@ main{
 .hero-video{display:block!important}
 .hero2{z-index:7!important}
 .shade{z-index:6!important;background:rgba(2,10,24,.92)!important}
+
+/* v30 lock final video frame during HERO2 reveal */
+.hero-top-fade,
+.hero-bottom-fade{
+  transition:opacity .25s ease;
+}
+.hero.reveal-lock .hero-top-fade,
+.hero.reveal-lock .hero-bottom-fade{
+  opacity:0!important;
+}
