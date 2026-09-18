@@ -2468,3 +2468,39 @@ html,body,main,
   white-space:nowrap!important;
   overflow:visible!important;
 }
+
+
+/* v60 — full-width hero date + zero footer padding + divider centered in gap */
+.hero1-date{
+  width:100%!important;
+  max-width:100%!important;
+  margin-left:0!important;
+  margin-right:0!important;
+  white-space:nowrap!important;
+}
+
+/* Footer has no internal padding */
+.address-footer{
+  padding:0!important;
+  margin-top:24px!important;
+  position:relative!important;
+}
+
+/* Second divider: exactly between program and address */
+.address-footer::before{
+  content:""!important;
+  position:absolute!important;
+  top:-12px!important;
+  left:calc(50% - 50vw)!important;
+  width:100vw!important;
+  height:1px!important;
+  background:rgba(247,244,237,.09)!important;
+  pointer-events:none!important;
+}
+
+/* Keep address content on the working grid */
+.address-footer,
+.address-footer .address,
+.address-footer .address a{
+  box-sizing:border-box!important;
+}
