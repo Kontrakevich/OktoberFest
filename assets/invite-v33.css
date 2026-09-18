@@ -481,3 +481,51 @@ main{width:min(100vw,520px);max-width:520px;min-height:100vh;background:var(--bg
   .salute{font-size:58px}
   .section{padding:34px var(--x)}
 }
+
+/* v34 — scroll-scene is a transparent motion track only */
+.scroll-scene{
+  position:relative!important;
+  height:500svh!important;
+  background:transparent!important;
+  overflow:visible!important;
+  isolation:auto!important;
+}
+
+/* The hero itself is the only visible layer during the scroll sequence. */
+.scroll-scene > .hero{
+  position:sticky!important;
+  top:0!important;
+  height:100svh!important;
+  width:100%!important;
+  margin:0!important;
+  padding:0!important;
+  overflow:hidden!important;
+  background:#000!important;
+  transform:none!important;
+}
+
+/* Absolutely no parent-section color may appear under/around the video. */
+.scroll-scene::before,
+.scroll-scene::after{
+  content:none!important;
+  display:none!important;
+}
+
+/* Keep video pinned edge-to-edge inside the sticky hero. */
+.hero-video{
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+  object-position:center!important;
+  transform:none!important;
+}
+
+/* The next content section starts immediately after the motion track;
+   it must not introduce a spacer or translated block. */
+.scroll-scene + .section{
+  position:relative!important;
+  margin-top:0!important;
+  transform:none!important;
+}
