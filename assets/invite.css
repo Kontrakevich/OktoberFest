@@ -271,3 +271,50 @@
   .event-title{font-size:clamp(5.4rem,8.6vw,10.6rem)}
   .salute{font-size:92px}
 }
+
+/* HERO 2 — возвращенный заголовок внизу */
+.hero-title-2{
+  position:absolute;
+  left:var(--x);
+  right:var(--x);
+  bottom:clamp(74px,10svh,118px);
+  z-index:5;
+  margin:0;
+  font-family:var(--display);
+  font-weight:400;
+  font-size:clamp(4rem,15vw,8.8rem);
+  line-height:.92;
+  letter-spacing:.03em;
+  color:var(--accent);
+  text-shadow:0 12px 36px rgba(0,0,0,.34);
+  opacity:0;
+  transform:translate3d(0,54px,0);
+  pointer-events:none;
+  will-change:transform,opacity;
+}
+.hero-title-2 span{
+  display:block;
+  white-space:nowrap;
+  word-break:keep-all;
+  overflow-wrap:normal;
+  hyphens:none;
+}
+.hero-bottom-fade{
+  height:34svh;
+  background:linear-gradient(
+    180deg,
+    rgba(4,18,36,0) 0%,
+    rgba(4,18,36,.16) 24%,
+    rgba(4,18,36,.62) 62%,
+    rgba(4,18,36,.94) 100%
+  );
+}
+@media(max-width:600px){
+  .hero-title-2{
+    font-size:clamp(3.6rem,15vw,5.6rem);
+    bottom:clamp(68px,9svh,92px);
+  }
+}
+@media(orientation:landscape),(min-width:900px){
+  .hero-title-2{font-size:clamp(5.4rem,8.6vw,10.6rem)}
+}
