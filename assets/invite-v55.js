@@ -480,3 +480,60 @@ requestAnimationFrame(render);
   if(document.fonts&&document.fonts.ready)document.fonts.ready.then(runV55);
   requestAnimationFrame(runV55);
 })();
+
+;(()=>{
+  function fitV56(){
+    const salute=document.querySelector(".salute");
+    const saluteLines=salute?[...salute.querySelectorAll(".salute-line")]:[];
+    if(salute&&saluteLines.length){
+      salute.style.removeProperty("font-size");
+      saluteLines.forEach(el=>{
+        el.style.setProperty("width","max-content","important");
+        el.style.setProperty("max-width","none","important");
+      });
+
+      requestAnimationFrame(()=>{
+        const target=salute.clientWidth;
+        const natural=Math.max(...saluteLines.map(el=>el.getBoundingClientRect().width),1);
+        const base=parseFloat(getComputedStyle(salute).fontSize)||58;
+        const size=Math.max(24,Math.min(96,base*(target/natural)));
+        salute.style.setProperty("font-size",size.toFixed(2)+"px","important");
+
+        saluteLines.forEach(el=>{
+          el.style.setProperty("width","var(--usable-w)","important");
+          el.style.setProperty("max-width","var(--usable-w)","important");
+        });
+      });
+    }
+
+    const address=document.querySelector(".address");
+    const addressLines=address?[...address.querySelectorAll(".address-line")]:[];
+    if(address&&addressLines.length){
+      addressLines.forEach(el=>{
+        el.style.removeProperty("font-size");
+        el.style.setProperty("width","max-content","important");
+        el.style.setProperty("max-width","none","important");
+      });
+
+      requestAnimationFrame(()=>{
+        const target=address.clientWidth;
+        addressLines.forEach((el,i)=>{
+          const natural=el.getBoundingClientRect().width||1;
+          const base=parseFloat(getComputedStyle(el).fontSize)||(i===0?72:32);
+          const min=i===0?28:16;
+          const max=i===0?140:80;
+          const size=Math.max(min,Math.min(max,base*(target/natural)));
+          el.style.setProperty("font-size",size.toFixed(2)+"px","important");
+          el.style.setProperty("width","var(--usable-w)","important");
+          el.style.setProperty("max-width","var(--usable-w)","important");
+        });
+      });
+    }
+  }
+
+  addEventListener("load",fitV56);
+  addEventListener("resize",fitV56);
+  addEventListener("orientationchange",()=>setTimeout(fitV56,260));
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(fitV56);
+  requestAnimationFrame(fitV56);
+})();
