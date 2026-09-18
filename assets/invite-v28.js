@@ -36,43 +36,41 @@ function autoScroll(){
   const travel=Math.max(1,scene.offsetHeight-innerHeight);
   const startP=progress();
   const videoEndP=.78;
+  const revealEndP=.86;
   const firstSection=document.querySelector(".section");
-  const finalY=firstSection ? Math.max(0,firstSection.offsetTop-Math.round(innerHeight*.02)) : scene.offsetTop+travel;
+  const finalY=firstSection?Math.max(0,firstSection.offsetTop-Math.round(innerHeight*.02)):scene.offsetTop+travel;
 
-  const startY=window.scrollY;
   const videoEndY=scene.offsetTop+travel*videoEndP;
+  const revealEndY=scene.offsetTop+travel*revealEndP;
 
   const videoRemaining=Math.max(0,videoEndP-startP);
   const videoMs=(videoRemaining/(videoEndP/Math.max(.001,duration)))*1000;
-
-  const tailDistance=Math.max(0,finalY-videoEndY);
-  const tailMs=Math.max(1200,tailDistance/0.75);
-
+  const revealMs=650;
+  const tailMs=1500;
   const started=performance.now();
 
   function step(now){
     const elapsed=now-started;
     let y;
-
     if(elapsed<=videoMs){
       const t=clamp(elapsed/Math.max(1,videoMs));
       const p=startP+(videoEndP-startP)*t;
       y=scene.offsetTop+travel*p;
+    }else if(elapsed<=videoMs+revealMs){
+      const t=easeIO(clamp((elapsed-videoMs)/revealMs));
+      y=videoEndY+(revealEndY-videoEndY)*t;
     }else{
-      const t=easeIO(clamp((elapsed-videoMs)/Math.max(1,tailMs)));
-      y=videoEndY+(finalY-videoEndY)*t;
+      const t=easeIO(clamp((elapsed-videoMs-revealMs)/tailMs));
+      y=revealEndY+(finalY-revealEndY)*t;
     }
-
     window.scrollTo(0,y);
-
-    if(elapsed<videoMs+tailMs){
+    if(elapsed<videoMs+revealMs+tailMs){
       autoScrollRaf=requestAnimationFrame(step);
     }else{
       window.scrollTo(0,finalY);
       autoScrollRaf=null;
     }
   }
-
   autoScrollRaf=requestAnimationFrame(step);
 }
 if(hint)hint.addEventListener("click",autoScroll);
@@ -83,31 +81,21 @@ function cancelAutoScroll(){
   }
 }
 let tailTriggered=false;
-let tailStartP=.78;
-let tailEndP=.96;
 
 function autoTail(){
   if(autoScrollRaf)return;
   const firstSection=document.querySelector(".section");
   if(!firstSection)return;
-
   const startY=window.scrollY;
   const targetY=Math.max(0,firstSection.offsetTop-Math.round(innerHeight*.02));
   const distance=targetY-startY;
   if(Math.abs(distance)<2)return;
-
   const started=performance.now();
-  const totalMs=1700;
-
+  const totalMs=1500;
   function step(now){
-    const t=clamp((now-started)/totalMs);
-    // linear progression to avoid any perceived pause or easing stall
+    const t=easeIO(clamp((now-started)/totalMs));
     window.scrollTo(0,startY+distance*t);
-    if(t<1){
-      autoScrollRaf=requestAnimationFrame(step);
-    }else{
-      autoScrollRaf=null;
-    }
+    if(t<1){autoScrollRaf=requestAnimationFrame(step)}else{autoScrollRaf=null}
   }
   autoScrollRaf=requestAnimationFrame(step);
 }
@@ -122,9 +110,7 @@ function render(){
   if(hero1){hero1.style.opacity=String(1-e);hero1.style.transform='translateY('+(-90*e)+'px)'}
   if(hint){hint.style.opacity=String(1-e);hint.style.transform='translate3d(-50%,'+(-36*e)+'px,0)'}
 
-  const h2base=ease(clamp((p-.78)/.12));
-  const tailT=clamp((p-tailStartP)/(tailEndP-tailStartP));
-  const h2=p<.78?0:Math.max(h2base,tailT);
+  const h2=p<.78?0:ease(clamp((p-.78)/.08));
 
   if(hero2){
     // HERO2 rises into its established lower-screen position and is fully settled by final landing.
@@ -135,11 +121,11 @@ function render(){
   if(bottomFade)bottomFade.style.opacity=String(Math.max(.58,h2));
   if(topFade)topFade.style.opacity=String(Math.max(.42,1-exit*.55));
 
-  const fade=easeIO(clamp((p-.78)/.10));
+  const fade=easeIO(clamp((p-.78)/.08));
   if(shade)shade.style.opacity=String(.92*fade);
 
   // Start immediately at video completion; no intermediate stop.
-  if(p>=.78 && !tailTriggered && !autoScrollRaf){
+  if(p>=.86 && !tailTriggered && !autoScrollRaf){
     tailTriggered=true;
     autoTail();
   }
