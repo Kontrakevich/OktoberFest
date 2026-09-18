@@ -53,6 +53,15 @@ if(hero&&!bottomFade){
   hero.appendChild(bottomFade);
 }
 
+let heroTitle2=document.getElementById("heroTitle2");
+if(hero&&!heroTitle2){
+  heroTitle2=document.createElement("div");
+  heroTitle2.className="hero-title-2";
+  heroTitle2.id="heroTitle2";
+  heroTitle2.innerHTML="<span>ОКТОБЕР</span><span>ФЕСТ</span>";
+  hero.appendChild(heroTitle2);
+}
+
 const hint=document.getElementById("hint");
 if(hint)hint.textContent="Листай вниз";
 
@@ -151,9 +160,18 @@ function render(){
     hint.style.opacity=String(hintOpacity);
   }
 
+  const hero2In=easeOut(clamp((p-.68)/.18));
+  const hero2Out=1-clamp((p-.94)/.06);
+  const hero2Opacity=hero2In*hero2Out;
+
   if(bottomFade){
-    bottomFade.style.transform='translate3d(0,'+(-hintShift)+'px,0)';
-    bottomFade.style.opacity=String(hintOpacity);
+    bottomFade.style.transform='none';
+    bottomFade.style.opacity=String(Math.max(.18,hero2Opacity));
+  }
+
+  if(heroTitle2){
+    heroTitle2.style.opacity=String(hero2Opacity);
+    heroTitle2.style.transform='translate3d(0,'+(54*(1-hero2In))+'px,0)';
   }
 
   requestAnimationFrame(render);
