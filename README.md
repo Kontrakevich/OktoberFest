@@ -31,3 +31,5 @@ Current invitation CSS: v16
 Current invitation CSS: v17
 
 Current invitation UI: v18
+
+Current invitation UI: v19
