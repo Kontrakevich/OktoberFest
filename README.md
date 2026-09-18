@@ -37,3 +37,5 @@ Current invitation UI: v19
 Current invitation UI: v20
 
 Current invitation UI: v21
+
+Current invitation UI: v22
