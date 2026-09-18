@@ -529,3 +529,27 @@ main{width:min(100vw,520px);max-width:520px;min-height:100vh;background:var(--bg
   margin-top:0!important;
   transform:none!important;
 }
+
+/* v35 — restore true sticky behavior */
+html,
+body{
+  overflow-x:clip!important;
+}
+main{
+  overflow:visible!important;
+  overflow-x:visible!important;
+  overflow-y:visible!important;
+  transform:none!important;
+  contain:none!important;
+}
+.scroll-scene{
+  overflow:visible!important;
+  transform:none!important;
+  contain:none!important;
+}
+.scroll-scene > .hero{
+  position:-webkit-sticky!important;
+  position:sticky!important;
+  top:0!important;
+  transform:none!important;
+}
