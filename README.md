@@ -91,3 +91,5 @@ Current invitation UI: v46
 Current invitation UI: v47
 
 Current invitation UI: v48
+
+Current invitation UI: v49
