@@ -2334,3 +2334,30 @@ html,body,main,
     margin-top:0!important;
   }
 }
+
+
+/* v57 — hero top rhythm + exact title fit + gothic program text */
+.hero1{
+  top:0!important;
+  margin-top:36px!important;
+}
+
+.hero1-title{
+  width:calc(100vw - 72px)!important;
+  max-width:calc(100vw - 72px)!important;
+  margin-left:0!important;
+  margin-right:0!important;
+}
+
+.hero1-title span{
+  display:block!important;
+  width:max-content!important;
+  max-width:none!important;
+  white-space:nowrap!important;
+}
+
+.program-text{
+  font-family:var(--display)!important;
+  font-weight:400!important;
+  font-style:normal!important;
+}
