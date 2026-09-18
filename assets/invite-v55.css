@@ -2246,3 +2246,91 @@ html,body,main,
     margin-top:0!important;
   }
 }
+
+
+/* v56 — exact 36px viewport grid */
+:root{
+  --site-pad:36px!important;
+  --site-w:min(100vw,520px);
+  --usable-w:calc(var(--site-w) - 72px);
+}
+
+/* SCREEN 1 */
+.hero1{
+  top:0!important;
+  margin-top:0!important;
+  left:36px!important;
+  right:36px!important;
+  width:var(--usable-w)!important;
+  max-width:var(--usable-w)!important;
+}
+
+/* SCREEN 2 */
+.section.screen2{
+  padding-top:36px!important;
+  padding-right:36px!important;
+  padding-bottom:36px!important;
+  padding-left:36px!important;
+}
+
+/* Exact common width: invite / program / salute lines / address lines */
+.invite-copy,
+.program,
+.salute,
+.salute-line{
+  width:var(--usable-w)!important;
+  max-width:var(--usable-w)!important;
+  box-sizing:border-box!important;
+}
+
+.invite-copy,
+.program,
+.salute{
+  margin-left:auto!important;
+  margin-right:auto!important;
+}
+
+/* Footer has 24px inner padding, while its inner address still lands
+   exactly on the same 36px site grid. */
+.address-footer{
+  width:calc(100% + 48px)!important;
+  max-width:none!important;
+  margin-left:-24px!important;
+  margin-right:-24px!important;
+  padding:24px!important;
+  box-sizing:border-box!important;
+}
+
+.address-footer .address,
+.address-footer .address a,
+.address-line{
+  width:var(--usable-w)!important;
+  max-width:var(--usable-w)!important;
+  box-sizing:border-box!important;
+}
+
+.address-footer .address{
+  margin-left:auto!important;
+  margin-right:auto!important;
+}
+
+.address-line{
+  display:block!important;
+  white-space:nowrap!important;
+}
+
+/* Preserve exact values on short/narrow devices */
+@media(max-width:390px),
+       (max-height:760px),
+       (max-height:650px){
+  .section.screen2{
+    padding-top:36px!important;
+    padding-right:36px!important;
+    padding-bottom:36px!important;
+    padding-left:36px!important;
+  }
+  .hero1{
+    top:0!important;
+    margin-top:0!important;
+  }
+}
