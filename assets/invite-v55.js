@@ -758,3 +758,42 @@ requestAnimationFrame(render);
   if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>requestAnimationFrame(runV59));
   requestAnimationFrame(runV59);
 })();
+
+;(()=>{
+  function fitHeroDateV60(){
+    const hero=document.getElementById("hero1");
+    const date=hero&&hero.querySelector(".hero1-date");
+    if(!hero||!date)return;
+
+    date.style.removeProperty("font-size");
+    date.style.setProperty("width","100%","important");
+    date.style.setProperty("max-width","100%","important");
+
+    requestAnimationFrame(()=>{
+      const target=hero.clientWidth;
+      const natural=date.getBoundingClientRect().width||1;
+      const base=parseFloat(getComputedStyle(date).fontSize)||36;
+      let size=base*(target/natural);
+      size=Math.max(20,Math.min(72,size));
+      date.style.setProperty("font-size",size.toFixed(2)+"px","important");
+
+      requestAnimationFrame(()=>{
+        const measured=date.scrollWidth||1;
+        if(measured>target+0.5){
+          size=size*(target/measured);
+          date.style.setProperty("font-size",size.toFixed(2)+"px","important");
+        }
+      });
+    });
+  }
+
+  function runV60(){
+    fitHeroDateV60();
+  }
+
+  addEventListener("load",()=>requestAnimationFrame(runV60));
+  addEventListener("resize",()=>requestAnimationFrame(runV60));
+  addEventListener("orientationchange",()=>setTimeout(runV60,260));
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>requestAnimationFrame(runV60));
+  requestAnimationFrame(runV60);
+})();
