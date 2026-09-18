@@ -97,3 +97,5 @@ Current invitation UI: v49
 Current invitation UI: v50
 
 Current invitation UI: v51
+
+Current invitation UI: v52
