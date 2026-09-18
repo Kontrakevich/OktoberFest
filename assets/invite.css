@@ -13,3 +13,81 @@
 @media(max-width:360px){.date-big{font-size:6rem}.event-title{font-size:3.35rem}}
 @media(orientation:landscape),(min-width:900px){.scroll-scene{height:470svh}.hero{background:radial-gradient(circle at center,#163f69 0%,var(--bg) 72%)}.hero-video{width:min(100%,calc(100vh * .574));height:100%;left:50%;right:auto;transform:translateX(-50%);object-fit:contain}.date-big{font-size:clamp(9rem,18vw,20rem)}.event-title{font-size:clamp(5.4rem,8.6vw,10.6rem)}.hero-time{font-size:clamp(2.7rem,4.2vw,4.8rem)}}
 @media(prefers-reduced-motion:reduce){.scroll-hint:after{animation:none}}
+
+
+/* v2 invitation refinements */
+.date-big{
+  font-size:clamp(4.5rem,18vw,11rem);
+  line-height:.8;
+  white-space:nowrap;
+}
+.hero-time{display:none!important}
+.scroll-hint{
+  font-size:12px;
+  letter-spacing:.12em;
+  font-weight:600;
+  color:rgba(247,244,237,.92);
+}
+.scroll-hint::before{
+  content:"Листай вниз";
+}
+.scroll-hint{font-size:0}
+.scroll-hint::before{font-size:12px}
+
+.section:first-of-type .kicker{display:none}
+.section:first-of-type{
+  min-height:100svh;
+  display:flex;
+  align-items:center;
+}
+.section:first-of-type .inner{width:min(100%,960px)}
+.salute{
+  color:var(--fg);
+  font-size:clamp(2.5rem,7vw,5rem);
+  line-height:1.02;
+  margin:0;
+}
+.salute-line{display:block}
+.cap2{
+  display:inline-block;
+  font-size:2em;
+  line-height:.5;
+  vertical-align:baseline;
+  margin-right:.01em;
+}
+.invite-card{
+  margin-top:clamp(32px,5vw,56px);
+  padding:0;
+  border:0;
+  border-radius:0;
+  background:none;
+  box-shadow:none;
+}
+.invite-copy{
+  margin:0;
+  max-width:900px;
+  font-size:clamp(1.55rem,4vw,2.6rem);
+  line-height:1.34;
+  font-family:var(--display);
+}
+.invite-copy strong{font-weight:400}
+.invite-line{display:block}
+.address a{
+  color:inherit;
+  text-decoration:none;
+  border-bottom:1px solid rgba(242,183,61,.7);
+}
+.address a:hover{color:var(--accent)}
+
+@media(max-width:600px){
+  .date-big{font-size:clamp(3.65rem,15.5vw,5.4rem)}
+  .event-title{font-size:clamp(3.8rem,16.2vw,6.2rem)}
+  .salute{font-size:clamp(2.35rem,10vw,3.7rem)}
+  .invite-copy{font-size:clamp(1.45rem,6.2vw,2.15rem)}
+}
+@media(max-width:360px){
+  .date-big{font-size:3.25rem}
+}
+@media(orientation:landscape),(min-width:900px){
+  .date-big{font-size:clamp(5.6rem,9vw,11rem)}
+}
