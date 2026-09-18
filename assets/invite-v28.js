@@ -24,7 +24,7 @@ function fitSalute(){
     salute.style.fontSize=size+"px";
   }
 }
-function capFirst(el){if(!el)return;const walker=document.createTreeWalker(el,NodeFilter.SHOW_TEXT);let n;while((n=walker.nextNode())){const t=n.nodeValue;const i=t.search(/[А-ЯЁA-Z]/);if(i>=0){const frag=document.createDocumentFragment();if(i>0)frag.appendChild(document.createTextNode(t.slice(0,i)));const span=document.createElement("span");span.className="cap";span.textContent=t[i];frag.appendChild(span);if(i+1<t.length)frag.appendChild(document.createTextNode(t.slice(i+1)));n.parentNode.replaceChild(frag,n);break;}}}const scene=document.getElementById("scene"),video=document.getElementById("heroVideo"),shade=document.getElementById("shade"),hero1=document.getElementById("hero1"),hero2=document.getElementById("hero2"),hint=document.getElementById("hint"),topFade=document.getElementById("heroTopFade"),bottomFade=document.getElementById("heroBottomFade");if(!scene||!video)return;
+function capFirst(el){if(!el)return;const walker=document.createTreeWalker(el,NodeFilter.SHOW_TEXT);let n;while((n=walker.nextNode())){const t=n.nodeValue;const i=t.search(/[А-ЯЁA-Z]/);if(i>=0){const frag=document.createDocumentFragment();if(i>0)frag.appendChild(document.createTextNode(t.slice(0,i)));const span=document.createElement("span");span.className="cap";span.textContent=t[i];frag.appendChild(span);if(i+1<t.length)frag.appendChild(document.createTextNode(t.slice(i+1)));n.parentNode.replaceChild(frag,n);break;}}}const hero=document.querySelector(".hero"),scene=document.getElementById("scene"),video=document.getElementById("heroVideo"),shade=document.getElementById("shade"),hero1=document.getElementById("hero1"),hero2=document.getElementById("hero2"),hint=document.getElementById("hint"),topFade=document.getElementById("heroTopFade"),bottomFade=document.getElementById("heroBottomFade");if(!scene||!video)return;
 const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v)),ease=t=>1-Math.pow(1-t,3),easeIO=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;let duration=5.06,target=0,visual=0,unlocked=false;
 function unlock(){if(unlocked)return;unlocked=true;const p=video.play();if(p&&p.then)p.then(()=>{video.pause();video.currentTime=target}).catch(()=>{})}
 function progress(){const r=scene.getBoundingClientRect(),travel=scene.offsetHeight-innerHeight;return clamp((-r.top)/Math.max(1,travel))}
@@ -36,41 +36,49 @@ function autoScroll(){
   const travel=Math.max(1,scene.offsetHeight-innerHeight);
   const startP=progress();
   const videoEndP=.78;
-  const revealEndP=.86;
   const firstSection=document.querySelector(".section");
   const finalY=firstSection?Math.max(0,firstSection.offsetTop-Math.round(innerHeight*.02)):scene.offsetTop+travel;
 
   const videoEndY=scene.offsetTop+travel*videoEndP;
-  const revealEndY=scene.offsetTop+travel*revealEndP;
-
   const videoRemaining=Math.max(0,videoEndP-startP);
   const videoMs=(videoRemaining/(videoEndP/Math.max(.001,duration)))*1000;
-  const revealMs=650;
+
+  const revealMs=700;
   const tailMs=1500;
   const started=performance.now();
 
   function step(now){
     const elapsed=now-started;
     let y;
+
     if(elapsed<=videoMs){
+      // Phase 1: video scrub only.
       const t=clamp(elapsed/Math.max(1,videoMs));
       const p=startP+(videoEndP-startP)*t;
       y=scene.offsetTop+travel*p;
+      if(hero)hero.classList.remove("reveal-lock");
     }else if(elapsed<=videoMs+revealMs){
-      const t=easeIO(clamp((elapsed-videoMs)/revealMs));
-      y=videoEndY+(revealEndY-videoEndY)*t;
+      // Phase 2: ABSOLUTE FREEZE. No page movement at all.
+      y=videoEndY;
+      if(hero)hero.classList.add("reveal-lock");
     }else{
+      // Phase 3: only now move the page upward.
       const t=easeIO(clamp((elapsed-videoMs-revealMs)/tailMs));
-      y=revealEndY+(finalY-revealEndY)*t;
+      y=videoEndY+(finalY-videoEndY)*t;
+      if(hero)hero.classList.add("reveal-lock");
     }
+
     window.scrollTo(0,y);
+
     if(elapsed<videoMs+revealMs+tailMs){
       autoScrollRaf=requestAnimationFrame(step);
     }else{
       window.scrollTo(0,finalY);
       autoScrollRaf=null;
+      if(hero)hero.classList.remove("reveal-lock");
     }
   }
+
   autoScrollRaf=requestAnimationFrame(step);
 }
 if(hint)hint.addEventListener("click",autoScroll);
@@ -80,7 +88,7 @@ function cancelAutoScroll(){
     autoScrollRaf=null;
   }
 }
-let tailTriggered=false;
+let tailTriggered=false;let revealClock=0;
 
 function autoTail(){
   if(autoScrollRaf)return;
@@ -110,7 +118,14 @@ function render(){
   if(hero1){hero1.style.opacity=String(1-e);hero1.style.transform='translateY('+(-90*e)+'px)'}
   if(hint){hint.style.opacity=String(1-e);hint.style.transform='translate3d(-50%,'+(-36*e)+'px,0)'}
 
-  const h2=p<.78?0:ease(clamp((p-.78)/.08));
+  let h2;
+  if(hero&&hero.classList.contains("reveal-lock")){
+    revealClock=Math.min(1,revealClock+.035);
+    h2=ease(revealClock);
+  }else{
+    revealClock=0;
+    h2=p<.78?0:ease(clamp((p-.78)/.08));
+  }
 
   if(hero2){
     // HERO2 rises into its established lower-screen position and is fully settled by final landing.
@@ -121,7 +136,7 @@ function render(){
   if(bottomFade)bottomFade.style.opacity=String(Math.max(.58,h2));
   if(topFade)topFade.style.opacity=String(Math.max(.42,1-exit*.55));
 
-  const fade=easeIO(clamp((p-.78)/.08));
+  const fade=(hero&&hero.classList.contains("reveal-lock"))?easeIO(revealClock):easeIO(clamp((p-.78)/.08));
   if(shade)shade.style.opacity=String(.92*fade);
 
   // Start immediately at video completion; no intermediate stop.
