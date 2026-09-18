@@ -1335,3 +1335,132 @@ html,body,main,
     column-gap:18px!important;
   }
 }
+
+/* v49 FINAL */
+
+/* HERO1: equal left/right paddings, adaptive to mobile width */
+.hero1{
+  left:var(--x)!important;
+  right:var(--x)!important;
+  width:auto!important;
+  max-width:none!important;
+  box-sizing:border-box!important;
+}
+.hero1-date{
+  max-width:100%!important;
+  font-size:clamp(1.95rem,7.2vw,3.2rem)!important;
+  line-height:.95!important;
+  white-space:nowrap!important;
+}
+.hero1-title{
+  max-width:100%!important;
+  font-size:clamp(3.15rem,12.6vw,5.6rem)!important;
+  line-height:.90!important;
+}
+.hero1-title span{
+  display:block!important;
+  max-width:100%!important;
+  white-space:nowrap!important;
+}
+
+/* "буду..." — equal side distances, left aligned inside */
+.invite-copy{
+  width:calc(100% - (2 * var(--x)))!important;
+  max-width:390px!important;
+  margin:34px auto 0!important;
+  padding:0!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:flex-start!important;
+  text-align:left!important;
+}
+.invite-copy .invite-line{
+  width:auto!important;
+  max-width:100%!important;
+  margin:0!important;
+  text-align:left!important;
+}
+
+/* Schedule: content-width, centered, responsive, only top line */
+.program{
+  width:max-content!important;
+  max-width:calc(100% - (2 * var(--x)))!important;
+  margin:0 auto!important;
+  padding:0!important;
+  display:grid!important;
+  gap:0!important;
+  border-top:1px solid rgba(247,244,237,.09)!important;
+  box-sizing:border-box!important;
+}
+.program-row{
+  width:100%!important;
+  display:grid!important;
+  grid-template-columns:max-content max-content!important;
+  align-items:center!important;
+  column-gap:14px!important;
+  padding:14px 0!important;
+  margin:0!important;
+  border:0!important;
+  box-sizing:border-box!important;
+}
+.program-row:first-child{
+  padding-top:14px!important;
+}
+.program-time{
+  margin:0!important;
+  white-space:nowrap!important;
+  font-size:clamp(1.6rem,5.7vw,2.45rem)!important;
+  line-height:1!important;
+}
+.program-text{
+  margin:0!important;
+  white-space:nowrap!important;
+  font-size:clamp(1.05rem,3.7vw,1.65rem)!important;
+  line-height:1.08!important;
+}
+
+/* Compact phones */
+@media(max-width:390px){
+  .hero1-date{
+    font-size:clamp(1.85rem,6.9vw,2.7rem)!important;
+  }
+  .hero1-title{
+    font-size:clamp(2.95rem,11.9vw,4.7rem)!important;
+  }
+
+  .invite-copy{
+    max-width:340px!important;
+    margin-top:30px!important;
+  }
+  .invite-copy .invite-line{
+    font-size:clamp(1.9rem,7.2vw,2.65rem)!important;
+    line-height:1.03!important;
+  }
+
+  .program-row{
+    column-gap:11px!important;
+    padding:12px 0!important;
+  }
+  .program-time{
+    font-size:clamp(1.5rem,5.35vw,2.1rem)!important;
+  }
+  .program-text{
+    font-size:clamp(.98rem,3.45vw,1.42rem)!important;
+  }
+}
+
+/* Very narrow phones */
+@media(max-width:340px){
+  .hero1-title{
+    font-size:clamp(2.7rem,11.2vw,4.2rem)!important;
+  }
+  .program-row{
+    column-gap:9px!important;
+  }
+  .program-time{
+    font-size:clamp(1.4rem,5.05vw,1.95rem)!important;
+  }
+  .program-text{
+    font-size:clamp(.92rem,3.25vw,1.28rem)!important;
+  }
+}
