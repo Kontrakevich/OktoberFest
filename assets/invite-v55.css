@@ -2504,3 +2504,57 @@ html,body,main,
 .address-footer .address a{
   box-sizing:border-box!important;
 }
+
+
+/* v61 — uniform program type + evenly distributed program rows + exact address width */
+
+/* Requested salutation spacing */
+.salute-line:nth-child(2){
+  margin-top:.48em!important;
+}
+
+/* Program is a vertical distribution block with equal spacing between rows */
+.program{
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:space-between!important;
+  gap:0!important;
+  width:calc(100vw - 72px)!important;
+  max-width:calc(100vw - 72px)!important;
+  min-height:clamp(150px,22dvh,220px)!important;
+}
+
+.program-row{
+  flex:0 0 auto!important;
+  width:100%!important;
+  display:grid!important;
+  grid-template-columns:var(--program-time-col) minmax(0,1fr)!important;
+  align-items:center!important;
+  padding:0!important;
+}
+
+/* One common font size for ALL program text rows.
+   JS calculates the largest common size that fits every second column. */
+.program-text{
+  font-family:var(--display)!important;
+  font-weight:400!important;
+  font-style:normal!important;
+  text-transform:lowercase!important;
+  white-space:nowrap!important;
+  overflow:visible!important;
+  line-height:1!important;
+}
+
+/* Both address lines share the exact usable width. */
+.address-footer,
+.address-footer .address,
+.address-footer .address a,
+.address-line{
+  width:calc(100vw - 72px)!important;
+  max-width:calc(100vw - 72px)!important;
+}
+
+.address-line{
+  display:block!important;
+  white-space:nowrap!important;
+}
