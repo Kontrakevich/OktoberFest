@@ -2568,3 +2568,13 @@ html,body,main,
 .program{
   margin-bottom:auto!important;
 }
+
+
+/* v63 — final program copy + vertical margins */
+.program{
+  margin-bottom:auto!important;
+}
+
+.invite-copy{
+  margin-bottom:0!important;
+}
