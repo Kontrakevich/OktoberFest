@@ -1,0 +1,27 @@
+@font-face{font-family:"Fortuna Gothic FlorishC";src:url("./FortunaGothicFlorishC.ttf") format("truetype");font-weight:400;font-style:normal;font-display:swap}
+:root{--bg:#061b37;--deep:#041224;--fg:#f7f4ed;--muted:rgba(247,244,237,.72);--accent:#f2b73d;--x:clamp(20px,5vw,76px);--display:"Fortuna Gothic FlorishC",Georgia,serif;--sans:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--fg);font-family:var(--sans)}body{overflow-x:hidden}
+.scroll-scene{position:relative;height:430svh;background:var(--bg)}.hero{position:sticky;top:0;height:100svh;overflow:hidden;isolation:isolate;background:var(--bg)}
+.hero-video{position:absolute;inset:0;z-index:1;width:100%;height:100%;object-fit:cover;object-position:center;pointer-events:none}
+.shade{position:absolute;inset:0;z-index:2;background:rgba(2,10,24,.86);opacity:0}
+.hero-top-fade,.hero-bottom-fade{position:absolute;left:0;right:0;z-index:3;pointer-events:none;will-change:opacity,transform}
+.hero-top-fade{top:0;height:24svh;background:linear-gradient(180deg,rgba(4,18,36,.92),rgba(4,18,36,.45) 45%,rgba(4,18,36,0))}
+.hero-bottom-fade{bottom:0;height:34svh;background:linear-gradient(180deg,rgba(4,18,36,0),rgba(4,18,36,.2) 30%,rgba(4,18,36,.72) 68%,rgba(4,18,36,.96))}
+.hero1{position:absolute;z-index:5;top:clamp(28px,5svh,58px);left:var(--x);right:var(--x);will-change:opacity,transform}
+.hero1-title,.hero2-title,.salute,.section-title,.program-time,.address{font-family:var(--display);font-weight:400}
+.hero1-title,.hero2-title{margin:0;color:var(--accent);font-size:clamp(4rem,15vw,8.8rem);line-height:.92;letter-spacing:.03em;text-shadow:0 12px 36px rgba(0,0,0,.32)}
+.hero1-title span,.hero2-title span{display:block;white-space:nowrap;word-break:keep-all;overflow-wrap:normal;hyphens:none}
+.hero2{position:absolute;z-index:5;left:var(--x);right:var(--x);bottom:clamp(78px,10svh,118px);opacity:0;transform:translateY(54px);will-change:opacity,transform}
+.hero2-date{margin:0 0 10px;font-family:var(--display);font-size:clamp(2rem,7vw,4.4rem);line-height:.95;color:var(--fg);white-space:nowrap}
+.scroll-hint{position:absolute;left:50%;bottom:max(18px,env(safe-area-inset-bottom));z-index:6;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:7px;color:#fff;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;pointer-events:auto;text-shadow:0 2px 12px rgba(0,0,0,.65)}
+.scroll-hint::after{content:"↓";font-size:22px;line-height:1;animation:pulse 1.2s ease-in-out infinite}@keyframes pulse{0%,100%{transform:translateY(0);opacity:.55}50%{transform:translateY(6px);opacity:1}}
+.section{padding:clamp(40px,7vw,72px) var(--x);background:var(--deep)}.section+.section{border-top:1px solid rgba(247,244,237,.08)}.inner{width:min(100%,980px);margin:0 auto}
+.salute{margin:0;color:var(--fg);font-size:62px;line-height:.92}.salute-line{display:block;white-space:nowrap;word-break:keep-all;overflow-wrap:normal;hyphens:none}
+.invite-copy{margin:24px 0 0;font-family:var(--display);font-size:clamp(1.45rem,4vw,2.2rem);line-height:1.2}.invite-line{display:block}
+.section-title{margin:0 0 18px;font-size:clamp(2.7rem,8vw,5rem);line-height:.92}
+.program{display:grid;gap:6px}.program-row{display:grid;grid-template-columns:76px 1fr;gap:12px;align-items:baseline;padding:9px 0;border-bottom:1px solid rgba(247,244,237,.09)}.program-time{font-size:clamp(1.5rem,3.6vw,2.3rem);color:var(--accent)}.program-text{font-size:clamp(1rem,2vw,1.22rem);line-height:1.32}
+.address{margin:18px 0 0;font-size:clamp(1.45rem,3.8vw,2.05rem);line-height:1.08}.address a{color:var(--fg);text-decoration:none;border-bottom:1px solid rgba(242,183,61,.75)}
+.notice{margin-top:16px}.notice p{margin:0;color:var(--muted);font-size:clamp(.98rem,2vw,1.14rem);line-height:1.42}.footer{height:52px;background:var(--deep)}
+@media(max-width:600px){.scroll-scene{height:430svh}.hero1-title,.hero2-title{font-size:clamp(3.7rem,15vw,5.7rem)}.hero2-date{font-size:clamp(1.8rem,7vw,2.6rem)}.salute{font-size:58px}.section{padding:34px var(--x)}}
+@media(max-width:360px){.salute{font-size:52px}}
+@media(orientation:landscape),(min-width:900px){.scroll-scene{height:390svh}.hero-video{width:min(100%,calc(100vh * .574));height:100%;left:50%;right:auto;transform:translateX(-50%);object-fit:contain}.hero1-title,.hero2-title{font-size:clamp(5.4rem,8.6vw,10.6rem)}.salute{font-size:92px}}
