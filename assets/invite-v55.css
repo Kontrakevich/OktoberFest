@@ -2558,3 +2558,13 @@ html,body,main,
   display:block!important;
   white-space:nowrap!important;
 }
+
+
+/* v62 — exact invite typography + program vertical margin */
+.invite-copy{
+  font-size:clamp(2.2rem,min(7.1vw,4.0dvh),3rem)!important;
+}
+
+.program{
+  margin-bottom:auto!important;
+}
