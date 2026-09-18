@@ -34,13 +34,13 @@
 .scroll-hint{font-size:0}
 .scroll-hint::before{font-size:12px}
 
-.section:first-of-type .kicker{display:none}
-.section:first-of-type{
+.scroll-scene + .section .kicker{display:none}
+.scroll-scene + .section{
   min-height:100svh;
   display:flex;
   align-items:center;
 }
-.section:first-of-type .inner{width:min(100%,960px)}
+.scroll-scene + .section .inner{width:min(100%,960px)}
 .salute{
   color:var(--fg);
   font-size:clamp(2.5rem,7vw,5rem);
