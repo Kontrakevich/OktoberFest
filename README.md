@@ -23,3 +23,5 @@
 Current invitation UI: v13
 
 Current invitation UI: v14
+
+Current interaction JS: v15
