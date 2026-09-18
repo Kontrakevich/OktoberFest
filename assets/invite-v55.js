@@ -707,3 +707,54 @@ requestAnimationFrame(render);
   if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>requestAnimationFrame(runV58));
   requestAnimationFrame(runV58);
 })();
+
+;(()=>{
+  function fitProgramTextMaxV59(){
+    const rows=[...document.querySelectorAll(".program-row")];
+    if(!rows.length)return;
+
+    rows.forEach(row=>{
+      const text=row.querySelector(".program-text");
+      if(!text)return;
+
+      text.textContent=text.textContent.toLocaleLowerCase("ru-RU");
+      text.style.removeProperty("font-size");
+
+      requestAnimationFrame(()=>{
+        const available=text.getBoundingClientRect().width;
+        if(!available)return;
+
+        let low=10;
+        let high=64;
+        let best=low;
+
+        for(let i=0;i<12;i++){
+          const mid=(low+high)/2;
+          text.style.setProperty("font-size",mid.toFixed(2)+"px","important");
+
+          const fits=text.scrollWidth<=available+0.5 &&
+                     text.getBoundingClientRect().width<=available+0.5;
+
+          if(fits){
+            best=mid;
+            low=mid;
+          }else{
+            high=mid;
+          }
+        }
+
+        text.style.setProperty("font-size",best.toFixed(2)+"px","important");
+      });
+    });
+  }
+
+  function runV59(){
+    fitProgramTextMaxV59();
+  }
+
+  addEventListener("load",()=>requestAnimationFrame(runV59));
+  addEventListener("resize",()=>requestAnimationFrame(runV59));
+  addEventListener("orientationchange",()=>setTimeout(runV59,260));
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>requestAnimationFrame(runV59));
+  requestAnimationFrame(runV59);
+})();
