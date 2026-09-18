@@ -111,3 +111,5 @@ Current invitation UI: v56
 Current invitation UI: v57
 
 Current invitation UI: v58
+
+Current invitation UI: v59
