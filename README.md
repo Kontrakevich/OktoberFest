@@ -29,3 +29,5 @@ Current interaction JS: v15
 Current invitation CSS: v16
 
 Current invitation CSS: v17
+
+Current invitation UI: v18
