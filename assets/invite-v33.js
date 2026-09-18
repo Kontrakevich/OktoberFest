@@ -81,8 +81,8 @@ function unlock(){
 
 function progress(){
   const r=scene.getBoundingClientRect();
-  const travel=scene.offsetHeight-innerHeight;
-  return clamp((-r.top)/Math.max(1,travel));
+  const travel=Math.max(1,scene.scrollHeight-innerHeight);
+  return clamp((-r.top)/travel);
 }
 
 function markInteraction(){userInteracted=true}
