@@ -336,3 +336,10 @@ main{
     line-height:1.01;
   }
 }
+
+/* v29 seamless final-frame overlay */
+.scroll-scene{background:transparent!important}
+.hero{background:#000!important}
+.hero-video{display:block!important}
+.hero2{z-index:7!important}
+.shade{z-index:6!important;background:rgba(2,10,24,.92)!important}
