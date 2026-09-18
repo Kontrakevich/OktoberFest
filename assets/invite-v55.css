@@ -2361,3 +2361,66 @@ html,body,main,
   font-weight:400!important;
   font-style:normal!important;
 }
+
+
+/* v58 — exact viewport title widths + centered invite + fitted program text */
+:root{
+  --viewport-content-w:calc(100vw - 72px);
+}
+
+/* All key display blocks use the same exact working width */
+.hero1,
+.salute,
+.address-footer,
+.address-footer .address,
+.address-footer .address a{
+  width:var(--viewport-content-w)!important;
+  max-width:var(--viewport-content-w)!important;
+  box-sizing:border-box!important;
+}
+
+.hero1{
+  left:36px!important;
+  right:auto!important;
+}
+
+.salute{
+  margin-left:auto!important;
+  margin-right:auto!important;
+}
+
+.salute-line,
+.address-line{
+  display:block!important;
+  width:var(--viewport-content-w)!important;
+  max-width:var(--viewport-content-w)!important;
+  box-sizing:border-box!important;
+  white-space:nowrap!important;
+}
+
+.address-footer{
+  margin-left:auto!important;
+  margin-right:auto!important;
+}
+.address-footer .address{
+  margin-left:auto!important;
+  margin-right:auto!important;
+}
+
+/* invite-copy box centered */
+.invite-copy{
+  align-self:center!important;
+  justify-self:center!important;
+  margin-left:auto!important;
+  margin-right:auto!important;
+}
+
+/* program text: gothic, lowercase, single line */
+.program-text{
+  font-family:var(--display)!important;
+  font-weight:400!important;
+  font-style:normal!important;
+  text-transform:lowercase!important;
+  white-space:nowrap!important;
+  min-width:0!important;
+}
