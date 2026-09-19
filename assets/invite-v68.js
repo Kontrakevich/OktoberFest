@@ -1246,3 +1246,214 @@ requestAnimationFrame(render);
   if(document.fonts&&document.fonts.ready)document.fonts.ready.then(runV68);
   requestAnimationFrame(runV68);
 })();
+
+;(()=>{
+  const clamp=(v,a,b)=>Math.min(b,Math.max(a,v));
+
+  function applyV70(){
+    const screen2=document.querySelector(".screen2");
+    const shell=document.querySelector(".screen2-shell");
+    const salute=document.querySelector(".salute");
+    const invite=document.querySelector(".invite-copy");
+    const address=document.querySelector(".address");
+    const lines=address?[...address.querySelectorAll(".address-line")]:[];
+    if(!screen2||!shell)return;
+
+    screen2.classList.remove("is-tight");
+
+    /* Slightly reduce the two upper text blocks so the full composition fits naturally. */
+    if(salute){
+      const size=clamp(window.innerWidth*.095,37,50);
+      salute.style.setProperty("font-size",size.toFixed(2)+"px","important");
+      salute.style.setProperty("width","100%","important");
+      salute.style.setProperty("max-width","100%","important");
+    }
+    if(invite){
+      const size=clamp(window.innerWidth*.073,29,38);
+      invite.style.setProperty("font-size",size.toFixed(2)+"px","important");
+      invite.style.setProperty("line-height",".97","important");
+    }
+
+    if(address&&lines.length>=2){
+      const target=Math.max(1,shell.clientWidth);
+      address.style.setProperty("width","100%","important");
+      address.style.setProperty("max-width","100%","important");
+
+      lines.forEach(el=>{
+        el.style.removeProperty("font-size");
+        el.style.setProperty("width","max-content","important");
+        el.style.setProperty("max-width","none","important");
+        el.style.setProperty("white-space","nowrap","important");
+        el.style.setProperty("letter-spacing","0","important");
+      });
+
+      requestAnimationFrame(()=>{
+        lines.forEach((el,i)=>{
+          const natural=Math.max(1,el.getBoundingClientRect().width);
+          const base=parseFloat(getComputedStyle(el).fontSize)||(i===0?64:30);
+          const fitted=base*((target*.985)/natural);
+          const min=i===0?44:20;
+          const max=i===0?112:48;
+          el.style.setProperty("font-size",clamp(fitted,min,max).toFixed(2)+"px","important");
+          el.style.setProperty("width","100%","important");
+          el.style.setProperty("max-width","100%","important");
+        });
+      });
+    }
+  }
+
+  function queueV70(){
+    requestAnimationFrame(()=>requestAnimationFrame(applyV70));
+    setTimeout(applyV70,120);
+  }
+
+  addEventListener("load",queueV70);
+  addEventListener("resize",queueV70);
+  addEventListener("orientationchange",()=>setTimeout(queueV70,320));
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(queueV70);
+  queueV70();
+})();
+
+;(()=>{
+  const TOTAL_SIDE_SPACE=76;
+  const SIDE=38;
+  const q=(s,r=document)=>r.querySelector(s);
+  const qa=(s,r=document)=>[...r.querySelectorAll(s)];
+
+  function esc(s){
+    return String(s)
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#39;");
+  }
+
+  function initialMarkup(word){
+    const chars=Array.from(word||"");
+    if(!chars.length)return "";
+    return '<span class="v71-initial">'+esc(chars[0])+'</span>'+esc(chars.slice(1).join(""));
+  }
+
+  function getSaluteParts(){
+    const old=q(".screen2 .salute");
+    const raw=(old?.textContent||"Уважаемый Гость").replace(/,\s*$/,"").trim();
+    const parts=raw.split(/\s+/).filter(Boolean);
+    return parts.length?parts:["Уважаемый","Гость"];
+  }
+
+  function build(){
+    const screen=q(".screen2");
+    if(!screen||screen.classList.contains("v71-ready"))return;
+    const parts=getSaluteParts();
+    const saluteLines=parts.map(w=>'<span class="v71-line">'+initialMarkup(w)+'</span>').join("");
+    screen.innerHTML=
+      '<div class="v71-shell">'+
+        '<section class="v71-salute v71-group" id="v71Salute">'+saluteLines+'</section>'+
+        '<section class="v71-invite v71-group" id="v71Invite">'+
+          '<span class="v71-line">буду рад</span>'+
+          '<span class="v71-line">видеть вас</span>'+
+          '<span class="v71-line">на ежегодном</span>'+
+          '<span class="v71-line">мероприятии</span>'+
+          '<span class="v71-line v71-gold">Октоберфест</span>'+
+        '</section>'+
+        '<section class="v71-meta-zone">'+
+          '<div class="v71-divider" aria-hidden="true"></div>'+
+          '<div class="v71-meta" id="v71Meta"><span class="v71-date">7 октября,</span> <span>18:30</span></div>'+
+          '<div class="v71-divider" aria-hidden="true"></div>'+
+        '</section>'+
+        '<section class="v71-address-wrap">'+
+          '<div class="v71-address" id="v71Address">'+
+            '<a href="https://yandex.ru/maps/?text=%D0%9C%D0%9E%D0%A1%D0%9A%D0%92%D0%90%2C%20%D0%A2%D0%BA%D0%B0%D1%86%D0%BA%D0%B0%D1%8F%20%D1%83%D0%BB.%205%2C%20%D1%81%D1%82.%207" target="_blank" rel="noopener noreferrer">'+
+              '<p class="v71-city" id="v71City">МОСКВА</p>'+
+              '<p class="v71-street" id="v71Street">Ткацкая ул. 5, ст. 7</p>'+
+            '</a>'+
+          '</div>'+
+        '</section>'+
+      '</div>';
+    screen.classList.add("v71-ready");
+  }
+
+  function pageWidth(){
+    const screen=q(".screen2.v71-ready");
+    if(!screen)return 393;
+    const r=screen.getBoundingClientRect();
+    return Math.max(220,r.width||screen.clientWidth||393);
+  }
+  function safeWidth(){return Math.max(180,pageWidth()-TOTAL_SIDE_SPACE)}
+  function setGeometry(){
+    const screen=q(".screen2.v71-ready");
+    if(!screen)return 317;
+    const safe=safeWidth();
+    screen.style.setProperty("--v71-side",SIDE+"px");
+    screen.style.setProperty("--v71-safe",safe.toFixed(2)+"px");
+    return safe;
+  }
+  function fitBlock(el,selector,target){
+    if(!el)return;
+    const nodes=selector?qa(selector,el):[el];
+    let low=4,high=180;
+    for(let i=0;i<18;i++){
+      const mid=(low+high)/2;
+      el.style.fontSize=mid.toFixed(3)+"px";
+      const width=Math.max(...nodes.map(n=>n.getBoundingClientRect().width),1);
+      if(width<=target)low=mid;else high=mid;
+    }
+    el.style.fontSize=low.toFixed(3)+"px";
+  }
+  function fitLine(el,target){
+    if(!el)return;
+    let low=4,high=180;
+    for(let i=0;i<18;i++){
+      const mid=(low+high)/2;
+      el.style.fontSize=mid.toFixed(3)+"px";
+      const width=Math.max(el.getBoundingClientRect().width,1);
+      if(width<=target)low=mid;else high=mid;
+    }
+    el.style.fontSize=low.toFixed(3)+"px";
+  }
+
+  function fitAll(){
+    if(!q(".screen2.v71-ready"))build();
+    const safe=setGeometry();
+    const salute=q("#v71Salute"),invite=q("#v71Invite"),meta=q("#v71Meta"),
+          city=q("#v71City"),street=q("#v71Street"),address=q("#v71Address");
+    if(!salute||!invite||!meta||!city||!street||!address)return;
+
+    fitBlock(salute,".v71-line",safe*.985);
+    fitBlock(meta,null,safe*.965);
+
+    const metaSize=parseFloat(getComputedStyle(meta).fontSize)||32;
+    invite.style.fontSize=metaSize.toFixed(3)+"px";
+    const inviteWidth=Math.max(...qa(".v71-line",invite).map(n=>n.getBoundingClientRect().width),1);
+    if(inviteWidth>safe*.975){
+      invite.style.fontSize=(metaSize*(safe*.975)/inviteWidth).toFixed(3)+"px";
+    }
+
+    fitLine(city,safe*.985);
+    fitLine(street,safe*.985);
+    const aw=Math.max(city.getBoundingClientRect().width,street.getBoundingClientRect().width);
+    address.style.width=Math.min(aw,safe).toFixed(2)+"px";
+  }
+
+  let raf=0;
+  function schedule(){
+    cancelAnimationFrame(raf);
+    raf=requestAnimationFrame(()=>requestAnimationFrame(fitAll));
+  }
+
+  build();
+  schedule();
+  addEventListener("load",schedule);
+  addEventListener("resize",schedule);
+  addEventListener("orientationchange",()=>setTimeout(schedule,180));
+  addEventListener("pageshow",schedule);
+  const screen=q(".screen2");
+  if(screen&&"ResizeObserver" in window)new ResizeObserver(schedule).observe(screen);
+  if(document.fonts){
+    Promise.all([document.fonts.ready,document.fonts.load('100px "Fortuna Gothic FlorishC"')])
+      .then(schedule).catch(schedule);
+  }
+  setTimeout(schedule,250);
+  setTimeout(schedule,900);
+})();
