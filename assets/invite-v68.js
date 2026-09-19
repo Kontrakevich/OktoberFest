@@ -1477,3 +1477,54 @@ requestAnimationFrame(render);
   setTimeout(schedule,250);
   setTimeout(schedule,900);
 })();
+
+;(()=>{
+  /* v71.31 — poster gate.
+     First paint uses the extracted WebP frame.
+     Video is revealed only after a real user action AND once loadeddata is ready. */
+  const hero=document.querySelector(".hero");
+  const video=document.getElementById("heroVideo");
+  const hint=document.getElementById("hint");
+  if(!hero||!video)return;
+
+  let requested=false;
+  let revealed=false;
+
+  function reveal(){
+    if(revealed)return;
+    revealed=true;
+    requestAnimationFrame(()=>hero.classList.add("video-live"));
+  }
+
+  function activateVideo(){
+    if(requested)return;
+    requested=true;
+
+    if(video.readyState>=2){
+      reveal();
+      return;
+    }
+
+    video.addEventListener("loadeddata",reveal,{once:true});
+    try{ video.load(); }catch(e){}
+  }
+
+  /* Finger/pen/mouse interaction starts preparing/revealing video immediately,
+     so a real scroll has no perceptible blank frame. */
+  addEventListener("touchstart",activateVideo,{once:true,passive:true,capture:true});
+  addEventListener("pointerdown",activateVideo,{once:true,passive:true,capture:true});
+  addEventListener("wheel",activateVideo,{once:true,passive:true,capture:true});
+
+  /* Covers keyboard scrolling and scrolls initiated after touch gesture. */
+  addEventListener("scroll",()=>{
+    if(window.scrollY>2)activateVideo();
+  },{passive:true});
+
+  /* Explicit CTA remains a supported start path. */
+  if(hint){
+    hint.addEventListener("click",activateVideo,{capture:true});
+    hint.addEventListener("keydown",e=>{
+      if(e.key==="Enter"||e.key===" ")activateVideo();
+    },{capture:true});
+  }
+})();
