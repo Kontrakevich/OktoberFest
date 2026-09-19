@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#07182b">
+<title>Рассылка приглашений — тест</title>
+<style>
+:root{--bg:#07182b;--panel:#0d2138;--line:rgba(255,255,255,.11);--text:#f4f2ec;--muted:#9fb0c1;--accent:#f2b73d}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+body{padding:24px}.wrap{width:min(100%,1000px);margin:auto}h1{margin:0 0 8px;font-size:clamp(26px,4vw,40px)}.sub{margin:0 0 28px;color:var(--muted)}
+.card{border:1px solid var(--line);background:var(--panel);border-radius:18px;overflow:hidden}
+.head,.row{display:grid;grid-template-columns:50px minmax(250px,1.3fr) minmax(230px,1fr) minmax(390px,1.5fr);align-items:center}
+.head{border-bottom:1px solid var(--line);color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.08em}
+.head>div,.row>div{padding:16px 18px}.row{min-height:90px}.person{font-weight:750;font-size:17px}.invite{color:var(--accent);font-weight:750;text-decoration:none}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+button,.btn{border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--text);border-radius:10px;padding:10px 12px;font:inherit;font-weight:650;cursor:pointer;text-decoration:none}
+.primary{background:var(--accent);color:#07182b;border-color:var(--accent)}
+#status{height:20px;margin-top:14px;color:var(--muted);font-size:13px}
+@media(max-width:780px){body{padding:16px}.head{display:none}.row{display:block}.row>div{padding:8px 16px}.row>div:first-child{padding-top:18px;color:var(--muted)}.actions{padding-bottom:18px!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>Рассылка приглашений</h1>
+<p class="sub">Тестовая строка</p>
+<div class="card">
+  <div class="head"><div>№</div><div>Получатель</div><div>Приглашение</div><div>Действия</div></div>
+  <div class="row">
+    <div>1</div>
+    <div class="person">Контракевич Михаил Юрьевич</div>
+    <div><a class="invite" href="../i/M7Q4KA/" target="_blank" rel="noopener">Приглашение на мероприятие</a></div>
+    <div class="actions">
+      <button id="copyLink">Копировать ссылку</button>
+      <button id="copyMessage">Копировать сообщение</button>
+      <button id="share" class="primary">Поделиться</button>
+      <a class="btn" href="../i/M7Q4KA/" target="_blank" rel="noopener">Открыть</a>
+    </div>
+  </div>
+</div>
+<div id="status"></div>
+</div>
+<script>
+const url="https://kontrakevich.github.io/OktoberFest/i/M7Q4KA/";
+const msg="Михаил Юрьевич, направляю Вам персональное приглашение на мероприятие.\n"+url;
+const status=document.getElementById("status");
+async function copyText(text,label){
+  try{await navigator.clipboard.writeText(text)}
+  catch(e){
+    const t=document.createElement("textarea");t.value=text;t.style.position="fixed";t.style.opacity="0";document.body.appendChild(t);t.select();document.execCommand("copy");t.remove()
+  }
+  status.textContent=label;setTimeout(()=>status.textContent="",1800)
+}
+document.getElementById("copyLink").onclick=()=>copyText(url,"Ссылка скопирована");
+document.getElementById("copyMessage").onclick=()=>copyText(msg,"Сообщение скопировано");
+document.getElementById("share").onclick=async()=>{
+  if(navigator.share){
+    try{await navigator.share({title:"Приглашение на мероприятие",text:"Михаил Юрьевич, направляю Вам персональное приглашение на мероприятие.",url})}catch(e){}
+  }else{
+    copyText(msg,"Сообщение скопировано")
+  }
+};
+</script>
+</body>
+</html>
