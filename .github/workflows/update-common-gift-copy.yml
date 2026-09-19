@@ -1,0 +1,62 @@
+name: Update common gift copy
+
+on:
+  push:
+    paths:
+      - ".github/workflows/update-common-gift-copy.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Replace invitation copy
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+
+          new_block = (
+              '<p class="invite-copy">'
+              '<span class="invite-line">примите этот продукт</span>'
+              '<span class="invite-line">в качестве подарка,</span>'
+              '<span class="invite-line">мне было очень приятно</span>'
+              '<span class="invite-line">работать для вас</span>'
+              '</p>'
+          )
+
+          changed = 0
+          targets = list(Path("guests").glob("*/index.html")) + list(Path("i").glob("*/index.html"))
+
+          for p in targets:
+              text = p.read_text(encoding="utf-8")
+              updated, n = re.subn(
+                  r'<p class="invite-copy(?: [^"]*)?">.*?</p>',
+                  new_block,
+                  text,
+                  count=1,
+                  flags=re.S,
+              )
+              if n and updated != text:
+                  p.write_text(updated, encoding="utf-8")
+                  changed += 1
+
+          print(f"Updated {changed} invitation pages")
+
+      - name: Commit changes
+        run: |
+          if git diff --quiet; then
+            echo "No changes"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add guests i
+          git commit -m "Update common invitation gift copy"
+          git push
