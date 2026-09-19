@@ -1377,12 +1377,12 @@ requestAnimationFrame(render);
             '<span class="v71-line">примите этот сайт</span>'+
             '<span class="v71-line">в качестве подарка.</span>'+
             '<span class="v71-line">Мне было приятно</span>'+
-            '<span class="v71-line">сделать его для вас</span>'+
+            '<span class="v71-line">сделать его для вас.</span>'+
           '</section>'+
           '<section class="v71-meta-zone">'+
             '<div class="v71-divider" aria-hidden="true"></div>'+
             '<div class="v71-meta" id="v71Meta">'+
-              '<span class="v71-line">С днем</span>'+
+              '<span class="v71-line">С днём</span>'+
               '<span class="v71-line">рождения!</span>'+
             '</div>'+
             '<div class="v71-divider" aria-hidden="true"></div>'+
