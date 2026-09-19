@@ -258,13 +258,9 @@ function playFromHint(){
 }
 
 function armAutoScroll(){
-  if(autoTimerStarted)return;
-  autoTimerStarted=true;
-  setTimeout(()=>{
-    if(userInteracted||scrollY>8)return;
-    autoStarted=true;
-    playFromHint();
-  },3000);
+  /* v71.29: automatic start disabled.
+     Scroll only by user gesture or explicit "Листай вниз" activation. */
+  return;
 }
 
 function render(){
