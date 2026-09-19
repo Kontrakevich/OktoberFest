@@ -2871,3 +2871,91 @@ main{
     max-height:100vh!important;
   }
 }
+
+
+/* v68 — vertical breathing room without nested scrolling */
+:root{
+  --screen2-gap-min:14px;
+}
+
+/* Stable one-screen canvas */
+.section.screen2{
+  height:100svh!important;
+  min-height:100svh!important;
+  max-height:100svh!important;
+  padding:36px!important;
+  overflow:clip!important;
+}
+
+.screen2-shell{
+  height:100%!important;
+  min-height:0!important;
+  max-height:none!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:stretch!important;
+  justify-content:flex-start!important;
+  overflow:visible!important;
+}
+
+/* Slightly more restrained default sizes; JS only reduces further if height requires it. */
+.salute{
+  font-size:clamp(2.7rem,min(10.4vw,5.15svh),4.65rem)!important;
+  line-height:.92!important;
+}
+.salute-line:nth-child(2){
+  margin-top:.40em!important;
+}
+.salute-line:nth-child(3){
+  margin-top:.06em!important;
+}
+
+.invite-copy{
+  font-size:clamp(1.95rem,min(6.6vw,3.55svh),2.75rem)!important;
+  line-height:1.01!important;
+}
+
+/* Let free height become breathing room instead of forcing oversized program height. */
+.program{
+  min-height:0!important;
+  height:auto!important;
+  flex:0 0 auto!important;
+  justify-content:flex-start!important;
+  margin-bottom:0!important;
+}
+.program-row{
+  min-height:0!important;
+  padding:0!important;
+}
+.program-row + .program-row{
+  margin-top:clamp(10px,1.65svh,18px)!important;
+}
+
+/* Vertical rhythm is distributed across the major blocks. */
+.invite-copy{
+  margin-top:auto!important;
+}
+.screen-divider{
+  margin-top:auto!important;
+  margin-bottom:0!important;
+}
+.program{
+  margin-top:auto!important;
+}
+.address-footer{
+  margin-top:auto!important;
+  margin-bottom:0!important;
+}
+
+/* Second divider remains centered between program and address. */
+.address-footer::before{
+  top:calc(-1 * clamp(7px,1.0svh,12px))!important;
+}
+
+/* Address gets a slightly tighter but still full-width display size. */
+.address-line:first-child{
+  line-height:.86!important;
+}
+.address-line:last-child{
+  line-height:.96!important;
+}
