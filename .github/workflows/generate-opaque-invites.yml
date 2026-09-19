@@ -1,0 +1,66 @@
+name: Generate opaque invitation aliases
+
+on:
+  push:
+    paths:
+      - ".github/workflows/generate-opaque-invites.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate aliases
+        shell: python
+        run: |
+          from pathlib import Path
+          import hashlib, base64, re, shutil
+
+          special = {"Контракевич-МЮ": "M7Q4KA"}
+
+          def token(name):
+              if name in special:
+                  return special[name]
+              raw = hashlib.sha256(name.encode("utf-8")).digest()
+              return base64.b32encode(raw).decode("ascii").replace("=", "")[:6]
+
+          root = Path("i")
+          root.mkdir(exist_ok=True)
+
+          for src in sorted(Path("guests").glob("*/index.html")):
+              folder = src.parent.name
+              code = token(folder)
+              dest = root / code / "index.html"
+              dest.parent.mkdir(parents=True, exist_ok=True)
+              text = src.read_text(encoding="utf-8")
+              text = re.sub(r"<title>.*?</title>", "<title>Приглашение на мероприятие</title>", text, count=1, flags=re.S)
+              og = (
+                  '<meta property="og:type" content="website">'
+                  '<meta property="og:title" content="Приглашение на мероприятие">'
+                  '<meta property="og:description" content="Персональное приглашение на Октоберфест · 7 октября · 18:30">'
+                  '<meta property="og:image" content="https://oktoberfest26.pages.dev/assets/hero-first-frame.webp">'
+                  f'<meta property="og:url" content="https://oktoberfest26.pages.dev/i/{code}/">'
+              )
+              if 'property="og:title"' not in text:
+                  text = text.replace("</head>", og + "</head>")
+              else:
+                  text = re.sub(r'<meta property="og:url" content="[^"]*">', f'<meta property="og:url" content="https://oktoberfest26.pages.dev/i/{code}/">', text)
+              dest.write_text(text, encoding="utf-8")
+
+      - name: Commit aliases
+        run: |
+          if git diff --quiet && [ -z "$(git status --porcelain i)" ]; then
+            echo "No changes"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add i
+          git commit -m "Generate opaque invitation aliases"
+          git push
