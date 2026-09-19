@@ -133,3 +133,5 @@ Current invitation UI: v67
 Current invitation UI: v68
 
 Current invitation UI: v68
+
+Current invitation UI: v69
