@@ -1374,12 +1374,10 @@ requestAnimationFrame(render);
         '<div class="v71-shell">'+
           '<section class="v71-salute v71-group" id="v71Salute">'+saluteLines+'</section>'+
           '<section class="v71-invite v71-group" id="v71Invite">'+
-            '<span class="v71-line">примите этот</span>'+
-            '<span class="v71-line">сайт в качестве</span>'+
-            '<span class="v71-line">подарка. Мне</span>'+
-            '<span class="v71-line">было очень</span>'+
-            '<span class="v71-line">приятно сделать</span>'+
-            '<span class="v71-line">его для вас</span>'+
+            '<span class="v71-line">примите этот сайт</span>'+
+            '<span class="v71-line">в качестве подарка.</span>'+
+            '<span class="v71-line">Мне было приятно</span>'+
+            '<span class="v71-line">сделать его для вас</span>'+
           '</section>'+
           '<section class="v71-meta-zone">'+
             '<div class="v71-divider" aria-hidden="true"></div>'+
