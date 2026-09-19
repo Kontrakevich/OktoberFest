@@ -2790,3 +2790,84 @@ main{
 .screen2{
   overflow-x:hidden!important;
 }
+
+
+/* v67 — hard reset of screen2 vertical behavior */
+.section.screen2{
+  position:relative!important;
+  width:100%!important;
+  height:100svh!important;
+  min-height:100svh!important;
+  max-height:100svh!important;
+  padding:36px!important;
+  margin:0!important;
+  box-sizing:border-box!important;
+  display:block!important;
+  overflow:clip!important;
+  overscroll-behavior:none!important;
+}
+
+.screen2-shell{
+  position:relative!important;
+  width:100%!important;
+  height:100%!important;
+  min-height:0!important;
+  max-height:none!important;
+  margin:0!important;
+  padding:0!important;
+  box-sizing:border-box!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:stretch!important;
+  justify-content:flex-start!important;
+  overflow:visible!important;
+  transform:none!important;
+}
+
+/* keep the salutation fully visible at the top of screen2 */
+.salute{
+  position:relative!important;
+  flex:0 0 auto!important;
+  width:100%!important;
+  max-width:100%!important;
+  margin-top:0!important;
+  margin-bottom:0!important;
+  padding:0!important;
+  align-self:stretch!important;
+  overflow:visible!important;
+}
+.salute-line{
+  overflow:visible!important;
+}
+
+/* no child of screen2 is allowed to become its own scroll container */
+.screen2-shell,
+.salute,
+.invite-copy,
+.screen-divider,
+.program,
+.address-footer,
+.address{
+  overflow-y:visible!important;
+  overflow-x:visible!important;
+  overscroll-behavior:none!important;
+}
+
+/* keep full-width rules on the 36px content grid */
+.screen-divider{
+  width:calc(100% + 72px)!important;
+  margin-left:-36px!important;
+  margin-right:-36px!important;
+}
+.address-footer::before{
+  left:-36px!important;
+  width:calc(100% + 72px)!important;
+}
+
+@supports not (height:100svh){
+  .section.screen2{
+    height:100vh!important;
+    min-height:100vh!important;
+    max-height:100vh!important;
+  }
+}
