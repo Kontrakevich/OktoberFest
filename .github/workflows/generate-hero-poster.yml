@@ -38,15 +38,51 @@ jobs:
             assets/hero-first-frame.webp
           ls -lh assets/hero-first-frame.webp
 
-      - name: Commit poster
+      - name: Patch all guest invitation HTML files
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          for p in Path("guests").glob("*/index.html"):
+              s = p.read_text(encoding="utf-8")
+
+              preload = '<link rel="preload" as="image" href="../../assets/hero-first-frame.webp" type="image/webp" fetchpriority="high">'
+              if preload not in s:
+                  s = s.replace(
+                      '<meta name="theme-color" content="#041224">',
+                      '<meta name="theme-color" content="#041224">' + preload
+                  )
+
+              old_video = '<video class="hero-video" id="heroVideo" muted playsinline webkit-playsinline preload="auto" src="../../oktoberfest-scroll.mp4"></video>'
+              new_video = '<div class="hero-poster" aria-hidden="true"></div><video class="hero-video" id="heroVideo" muted playsinline webkit-playsinline preload="metadata" poster="../../assets/hero-first-frame.webp" src="../../oktoberfest-scroll.mp4"></video>'
+
+              if old_video in s:
+                  s = s.replace(old_video, new_video)
+              elif 'class="hero-poster"' not in s:
+                  s = s.replace(
+                      '<div class="hero">',
+                      '<div class="hero"><div class="hero-poster" aria-hidden="true"></div>'
+                  )
+                  s = s.replace(
+                      'preload="auto" src="../../oktoberfest-scroll.mp4"',
+                      'preload="metadata" poster="../../assets/hero-first-frame.webp" src="../../oktoberfest-scroll.mp4"'
+                  )
+
+              p.write_text(s, encoding="utf-8")
+
+          print("Patched guest pages:", len(list(Path("guests").glob("*/index.html"))))
+          PY
+
+      - name: Commit poster and HTML changes
         shell: bash
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add assets/hero-first-frame.webp
+          git add assets/hero-first-frame.webp guests/*/index.html
           if git diff --cached --quiet; then
-            echo "Poster is already current."
+            echo "No changes."
             exit 0
           fi
-          git commit -m "Generate optimized hero first-frame poster"
+          git commit -m "Embed hero poster into all guest invitations"
           git push
