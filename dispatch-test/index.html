@@ -43,7 +43,7 @@ button,.btn{border:1px solid var(--line);background:rgba(255,255,255,.04);color:
 </div>
 <script>
 const url="https://kontrakevich.github.io/OktoberFest/i/M7Q4KA/";
-const msg="Михаил Юрьевич, направляю Вам персональное приглашение на мероприятие.\n"+url;
+const msg="Приглашение для Михаила Юрьевича\n"+url;
 const status=document.getElementById("status");
 async function copyText(text,label){
   try{await navigator.clipboard.writeText(text)}
@@ -56,7 +56,7 @@ document.getElementById("copyLink").onclick=()=>copyText(url,"Ссылка ск�
 document.getElementById("copyMessage").onclick=()=>copyText(msg,"Сообщение скопировано");
 document.getElementById("share").onclick=async()=>{
   if(navigator.share){
-    try{await navigator.share({title:"Приглашение на мероприятие",text:"Михаил Юрьевич, направляю Вам персональное приглашение на мероприятие.",url})}catch(e){}
+    try{await navigator.share({title:"Приглашение на мероприятие",text:"Приглашение для Михаила Юрьевича",url})}catch(e){}
   }else{
     copyText(msg,"Сообщение скопировано")
   }
