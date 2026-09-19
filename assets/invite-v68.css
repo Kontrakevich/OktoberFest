@@ -3305,3 +3305,28 @@ html,body{-webkit-text-size-adjust:none!important;text-size-adjust:none!importan
     rgba(4,18,36,1) 100%
   )!important;
 }
+
+/* v71.31 — instant static first frame before interaction.
+   The WebP is the actual first frame extracted from oktoberfest-scroll.mp4. */
+.hero::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:2;
+  pointer-events:none;
+  background:#041224 url("./hero-first-frame.webp") center center / cover no-repeat;
+  opacity:1;
+  transition:opacity .22s ease;
+  will-change:opacity;
+}
+
+/* Keep the static poster until the video has usable pixel data.
+   Gradients stay above it (z=3), hero typography stays above both (z=5). */
+.hero.video-live::after{
+  opacity:0;
+}
+
+/* The poster is the first visual layer; video remains ready underneath. */
+.hero-video{
+  z-index:1!important;
+}
