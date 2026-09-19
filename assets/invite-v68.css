@@ -3147,3 +3147,131 @@ html[data-s2-profile="xl"]{
     max-height:100vh!important;
   }
 }
+
+/* v69 — final mobile QA: safe bottom + balanced lower divider */
+.section.screen2{
+  padding-bottom:max(var(--s2-pad-y), calc(env(safe-area-inset-bottom,0px) + 16px))!important;
+}
+
+/* Keep layout geometry intact; only rebalance the perceived gap after the program. */
+.address-footer::before{
+  top:max(var(--address-rule-top,-14px), -14px)!important;
+}
+
+/* v70 — compact invitation typography + full-width safe address */
+.section.screen2{
+  padding-top:clamp(22px,3.2svh,30px)!important;
+  padding-right:28px!important;
+  padding-bottom:max(24px,calc(env(safe-area-inset-bottom,0px) + 20px))!important;
+  padding-left:28px!important;
+}
+
+.screen2-shell{
+  min-height:0!important;
+}
+
+.salute{
+  line-height:.90!important;
+}
+.salute-line:nth-child(2){
+  margin-top:.38em!important;
+}
+.salute-line:nth-child(3){
+  margin-top:.03em!important;
+}
+
+.invite-copy{
+  max-width:calc(100% - 16px)!important;
+  line-height:.97!important;
+}
+
+/* Program uses natural height so the address cannot collide with the 22:00 row. */
+.program{
+  flex:0 0 auto!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  margin-top:auto!important;
+  margin-bottom:0!important;
+  display:flex!important;
+  flex-direction:column!important;
+  justify-content:flex-start!important;
+  gap:clamp(10px,1.25svh,14px)!important;
+  overflow:visible!important;
+}
+.program-row + .program-row{
+  margin-top:0!important;
+}
+
+/* Address occupies the whole safe content width and remains inside the bottom inset. */
+.address-footer{
+  flex:0 0 auto!important;
+  width:100%!important;
+  max-width:100%!important;
+  margin-top:auto!important;
+  margin-bottom:0!important;
+  padding:0!important;
+  display:flex!important;
+  justify-content:flex-start!important;
+  overflow:visible!important;
+}
+.address-footer::before{
+  top:-10px!important;
+}
+.address-footer .address{
+  width:100%!important;
+  max-width:100%!important;
+  margin:0!important;
+  align-self:center!important;
+  overflow:visible!important;
+}
+.address-footer .address a{
+  width:100%!important;
+  max-width:100%!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:flex-start!important;
+  overflow:visible!important;
+}
+
+/* v71.28 FINAL ADAPTIVE INVITATION SCREEN */
+html,body{-webkit-text-size-adjust:none!important;text-size-adjust:none!important}
+.screen2.v71-ready{
+  --v71-side:38px;
+  --v71-safe:calc(100% - 76px);
+  width:100%!important;height:100svh!important;min-height:100svh!important;
+  padding:36px var(--v71-side)!important;margin:0!important;overflow:hidden!important;
+  background:var(--deep)!important;display:block!important
+}
+.v71-shell{
+  width:100%;height:100%;min-height:0;display:grid;
+  grid-template-rows:auto auto minmax(0,1fr) auto;
+  overflow:hidden;font-family:var(--display);color:var(--fg)
+}
+.v71-group{width:max-content;max-width:var(--v71-safe);margin-inline:auto;text-align:left;font-weight:400}
+.v71-line{display:block;width:max-content;white-space:nowrap}
+.v71-salute{line-height:.90;padding-bottom:clamp(34px,5svh,48px)}
+.v71-salute .v71-line+.v71-line{margin-top:.035em}
+.v71-initial{color:var(--accent)}
+.v71-invite{line-height:.98}
+.v71-invite .v71-gold{color:var(--accent)}
+.v71-meta-zone{
+  width:calc(100% + (var(--v71-side) * 2));margin-left:calc(var(--v71-side) * -1);
+  min-height:0;display:flex;flex-direction:column;justify-content:space-evenly
+}
+.v71-divider{width:100%;height:1px;flex:0 0 1px;background:var(--line)}
+.v71-meta{
+  width:max-content;max-width:var(--v71-safe);margin-inline:auto;text-align:left;
+  white-space:nowrap;line-height:.96;font-weight:400
+}
+.v71-date{color:var(--accent)}
+.v71-address-wrap{width:100%}
+.v71-address{width:max-content;max-width:var(--v71-safe);margin-inline:auto;text-align:left}
+.v71-address a{display:block;color:inherit;text-decoration:none;border:0!important}
+.v71-address p{display:block;width:max-content;margin:0;white-space:nowrap;font-weight:400}
+.v71-city{line-height:.84;margin-bottom:8px!important;color:var(--accent)}
+.v71-street{line-height:.96;color:var(--fg)}
+@media(max-height:820px){
+  .screen2.v71-ready{padding-top:30px!important;padding-bottom:30px!important}
+  .v71-salute{padding-bottom:28px}
+}
