@@ -125,3 +125,5 @@ Current invitation UI: v63
 Current invitation UI: v64
 
 Current invitation UI: v65
+
+Current invitation UI: v66
