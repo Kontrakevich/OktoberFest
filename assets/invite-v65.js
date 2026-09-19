@@ -1037,3 +1037,65 @@ requestAnimationFrame(render);
   if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>requestAnimationFrame(runV65));
   requestAnimationFrame(runV65);
 })();
+
+;(()=>{
+  const q=(s,r=document)=>r.querySelector(s);
+  const qa=(s,r=document)=>[...r.querySelectorAll(s)];
+
+  function px(el,prop){
+    return parseFloat(getComputedStyle(el)[prop])||0;
+  }
+
+  function fitScreen2HeightV68(){
+    const shell=q(".screen2-shell");
+    const salute=q(".salute");
+    const invite=q(".invite-copy");
+    const program=q(".program");
+    const address=q(".address-footer");
+    const divider=q(".screen-divider");
+    if(!shell||!salute||!invite||!program||!address||!divider)return;
+
+    /* Reset previous height-fit scaling. Width-fit code remains in control horizontally. */
+    [salute,invite].forEach(el=>el.style.removeProperty("--v68-size"));
+    qa(".program-time,.program-text,.address-line").forEach(el=>el.style.removeProperty("--v68-size"));
+
+    requestAnimationFrame(()=>{
+      const available=shell.clientHeight;
+      if(!available)return;
+
+      const blocks=[salute,invite,divider,program,address];
+      const contentHeight=blocks.reduce((sum,el)=>sum+el.getBoundingClientRect().height,0);
+      const targetGap=14;
+      const targetTotal=contentHeight+targetGap*4;
+
+      if(targetTotal<=available)return;
+
+      /* Reduce only typography, preserving every requested width. */
+      const ratio=Math.max(.78,Math.min(1,(available-targetGap*4)/Math.max(contentHeight,1)));
+
+      const scaleFont=(el,min)=>{
+        const current=parseFloat(getComputedStyle(el).fontSize)||min;
+        el.style.setProperty("font-size",Math.max(min,current*ratio).toFixed(2)+"px","important");
+      };
+
+      scaleFont(salute,36);
+      scaleFont(invite,28);
+
+      qa(".program-time").forEach(el=>scaleFont(el,20));
+      qa(".program-text").forEach(el=>scaleFont(el,18));
+      const addressLines=qa(".address-line");
+      if(addressLines[0])scaleFont(addressLines[0],42);
+      if(addressLines[1])scaleFont(addressLines[1],22);
+    });
+  }
+
+  function runV68(){
+    fitScreen2HeightV68();
+  }
+
+  addEventListener("load",()=>requestAnimationFrame(runV68));
+  addEventListener("resize",()=>requestAnimationFrame(runV68));
+  addEventListener("orientationchange",()=>setTimeout(runV68,260));
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>requestAnimationFrame(runV68));
+  requestAnimationFrame(runV68);
+})();
