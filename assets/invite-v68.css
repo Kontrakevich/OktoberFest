@@ -3330,3 +3330,34 @@ html,body{-webkit-text-size-adjust:none!important;text-size-adjust:none!importan
 .hero-video{
   z-index:1!important;
 }
+
+/* v71.32 — real DOM poster layer for iOS first paint.
+   This exists in HTML before JS and therefore does not wait for interaction. */
+.hero-poster{
+  position:absolute!important;
+  inset:0!important;
+  z-index:2!important;
+  pointer-events:none!important;
+  background-color:#041224!important;
+  background-image:url("./hero-first-frame.webp")!important;
+  background-repeat:no-repeat!important;
+  background-position:center center!important;
+  background-size:cover!important;
+  opacity:1!important;
+  transition:opacity .22s ease!important;
+  will-change:opacity;
+}
+
+.hero.video-live .hero-poster{
+  opacity:0!important;
+}
+
+/* Gradients and typography remain above the poster. */
+.hero::before,
+.hero-bottom-fade{
+  z-index:3!important;
+}
+.hero1,
+.scroll-hint{
+  z-index:5!important;
+}
