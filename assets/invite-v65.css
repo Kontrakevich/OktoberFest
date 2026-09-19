@@ -2750,3 +2750,43 @@ main{
 .screen2-shell{
   overflow-x:hidden!important;
 }
+
+
+/* v66 — restore sticky video behavior after v65 horizontal lock */
+html,
+body{
+  overflow-x:clip!important;
+}
+
+main{
+  overflow:visible!important;
+  overflow-x:visible!important;
+  overflow-y:visible!important;
+  transform:none!important;
+  contain:none!important;
+}
+
+.scroll-scene{
+  position:relative!important;
+  overflow:visible!important;
+  overflow-x:visible!important;
+  overflow-y:visible!important;
+  transform:none!important;
+  contain:none!important;
+  isolation:auto!important;
+}
+
+.scroll-scene > .hero{
+  position:-webkit-sticky!important;
+  position:sticky!important;
+  top:0!important;
+  height:100svh!important;
+  width:100%!important;
+  overflow:hidden!important;
+  transform:none!important;
+  contain:none!important;
+}
+
+.screen2{
+  overflow-x:hidden!important;
+}
