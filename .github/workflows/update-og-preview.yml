@@ -1,0 +1,112 @@
+name: Update invitation preview metadata
+
+on:
+  push:
+    paths:
+      - ".github/workflows/update-og-preview.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  update-preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Update Open Graph metadata for opaque invitation links
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+
+          title = "Приглашение на Oktoberfest26"
+          description = "7 октября, 18:30&#10;улица Ткацкая 5с7"
+
+          changed = 0
+          for p in Path("i").glob("*/index.html"):
+              text = p.read_text(encoding="utf-8")
+
+              text = re.sub(
+                  r"<title>.*?</title>",
+                  f"<title>{title}</title>",
+                  text,
+                  count=1,
+                  flags=re.S,
+              )
+              text = re.sub(
+                  r'<meta property="og:title" content="[^"]*">',
+                  f'<meta property="og:title" content="{title}">',
+                  text,
+                  count=1,
+              )
+              text = re.sub(
+                  r'<meta property="og:description" content="[^"]*">',
+                  f'<meta property="og:description" content="{description}">',
+                  text,
+                  count=1,
+              )
+
+              if 'name="description"' in text:
+                  text = re.sub(
+                      r'<meta name="description" content="[^"]*">',
+                      f'<meta name="description" content="{description}">',
+                      text,
+                      count=1,
+                  )
+              else:
+                  text = text.replace(
+                      "</title>",
+                      f'</title><meta name="description" content="{description}">',
+                      1,
+                  )
+
+              if 'property="og:site_name"' not in text:
+                  text = text.replace(
+                      '<meta property="og:type" content="website">',
+                      '<meta property="og:type" content="website"><meta property="og:site_name" content="Oktoberfest26">',
+                      1,
+                  )
+
+              if 'name="twitter:title"' not in text:
+                  text = text.replace(
+                      "</head>",
+                      f'<meta name="twitter:title" content="{title}">'
+                      f'<meta name="twitter:description" content="{description}">'
+                      '</head>',
+                      1,
+                  )
+              else:
+                  text = re.sub(
+                      r'<meta name="twitter:title" content="[^"]*">',
+                      f'<meta name="twitter:title" content="{title}">',
+                      text,
+                      count=1,
+                  )
+                  text = re.sub(
+                      r'<meta name="twitter:description" content="[^"]*">',
+                      f'<meta name="twitter:description" content="{description}">',
+                      text,
+                      count=1,
+                  )
+
+              old = p.read_text(encoding="utf-8")
+              if text != old:
+                  p.write_text(text, encoding="utf-8")
+                  changed += 1
+
+          print(f"Updated {changed} invitation preview pages")
+
+      - name: Commit preview metadata
+        run: |
+          if git diff --quiet; then
+            echo "No changes"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add i
+          git commit -m "Update invitation preview metadata"
+          git push
