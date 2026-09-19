@@ -16,29 +16,42 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Update Open Graph metadata for opaque invitation links
+      - name: Update personalized Open Graph metadata
         shell: python
         run: |
           from pathlib import Path
           import re
-
-          title = "Приглашение на Oktoberfest26"
-          description = "7 октября, 18:30&#10;улица Ткацкая 5с7"
+          from html import escape
 
           changed = 0
           for p in Path("i").glob("*/index.html"):
-              text = p.read_text(encoding="utf-8")
+              old = p.read_text(encoding="utf-8")
+              text = old
+
+              m = re.search(r'<h2 class="salute">([^<]+)</h2>', text)
+              if not m:
+                  print(f"Skip {p}: salute not found")
+                  continue
+
+              greeting = m.group(1).strip().rstrip(",") + ","
+              title = greeting
+              description = (
+                  "буду рад видеть вас на&#10;"
+                  "Oktoberfest26&#10;"
+                  "7 октября, в 18:30&#10;"
+                  "Москва, Ткацкая 5с7"
+              )
 
               text = re.sub(
                   r"<title>.*?</title>",
-                  f"<title>{title}</title>",
+                  f"<title>{escape(title)}</title>",
                   text,
                   count=1,
                   flags=re.S,
               )
               text = re.sub(
                   r'<meta property="og:title" content="[^"]*">',
-                  f'<meta property="og:title" content="{title}">',
+                  f'<meta property="og:title" content="{escape(title)}">',
                   text,
                   count=1,
               )
@@ -63,25 +76,24 @@ jobs:
                       1,
                   )
 
-              if 'property="og:site_name"' not in text:
+              if 'property="og:site_name"' in text:
+                  text = re.sub(
+                      r'<meta property="og:site_name" content="[^"]*">',
+                      '<meta property="og:site_name" content="oktoberfest26.pages.dev">',
+                      text,
+                      count=1,
+                  )
+              else:
                   text = text.replace(
                       '<meta property="og:type" content="website">',
-                      '<meta property="og:type" content="website"><meta property="og:site_name" content="Oktoberfest26">',
+                      '<meta property="og:type" content="website"><meta property="og:site_name" content="oktoberfest26.pages.dev">',
                       1,
                   )
 
-              if 'name="twitter:title"' not in text:
-                  text = text.replace(
-                      "</head>",
-                      f'<meta name="twitter:title" content="{title}">'
-                      f'<meta name="twitter:description" content="{description}">'
-                      '</head>',
-                      1,
-                  )
-              else:
+              if 'name="twitter:title"' in text:
                   text = re.sub(
                       r'<meta name="twitter:title" content="[^"]*">',
-                      f'<meta name="twitter:title" content="{title}">',
+                      f'<meta name="twitter:title" content="{escape(title)}">',
                       text,
                       count=1,
                   )
@@ -91,13 +103,20 @@ jobs:
                       text,
                       count=1,
                   )
+              else:
+                  text = text.replace(
+                      "</head>",
+                      f'<meta name="twitter:title" content="{escape(title)}">'
+                      f'<meta name="twitter:description" content="{description}">'
+                      '</head>',
+                      1,
+                  )
 
-              old = p.read_text(encoding="utf-8")
               if text != old:
                   p.write_text(text, encoding="utf-8")
                   changed += 1
 
-          print(f"Updated {changed} invitation preview pages")
+          print(f"Updated {changed} personalized preview pages")
 
       - name: Commit preview metadata
         run: |
@@ -108,5 +127,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add i
-          git commit -m "Update invitation preview metadata"
+          git commit -m "Personalize invitation preview metadata"
           git push
