@@ -16,42 +16,30 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Update personalized Open Graph metadata
+      - name: Update generic Open Graph metadata
         shell: python
         run: |
           from pathlib import Path
           import re
-          from html import escape
+
+          title = "Приглашение на Oktoberfest26"
+          description = "7 октября, в 18:30&#10;Москва, Ткацкая 5с7"
 
           changed = 0
           for p in Path("i").glob("*/index.html"):
               old = p.read_text(encoding="utf-8")
               text = old
 
-              m = re.search(r'<h2 class="salute">([^<]+)</h2>', text)
-              if not m:
-                  print(f"Skip {p}: salute not found")
-                  continue
-
-              greeting = m.group(1).strip().rstrip(",") + ","
-              title = greeting
-              description = (
-                  "буду рад видеть вас на&#10;"
-                  "Oktoberfest26&#10;"
-                  "7 октября, в 18:30&#10;"
-                  "Москва, Ткацкая 5с7"
-              )
-
               text = re.sub(
                   r"<title>.*?</title>",
-                  f"<title>{escape(title)}</title>",
+                  f"<title>{title}</title>",
                   text,
                   count=1,
                   flags=re.S,
               )
               text = re.sub(
                   r'<meta property="og:title" content="[^"]*">',
-                  f'<meta property="og:title" content="{escape(title)}">',
+                  f'<meta property="og:title" content="{title}">',
                   text,
                   count=1,
               )
@@ -93,7 +81,7 @@ jobs:
               if 'name="twitter:title"' in text:
                   text = re.sub(
                       r'<meta name="twitter:title" content="[^"]*">',
-                      f'<meta name="twitter:title" content="{escape(title)}">',
+                      f'<meta name="twitter:title" content="{title}">',
                       text,
                       count=1,
                   )
@@ -106,7 +94,7 @@ jobs:
               else:
                   text = text.replace(
                       "</head>",
-                      f'<meta name="twitter:title" content="{escape(title)}">'
+                      f'<meta name="twitter:title" content="{title}">'
                       f'<meta name="twitter:description" content="{description}">'
                       '</head>',
                       1,
@@ -116,7 +104,7 @@ jobs:
                   p.write_text(text, encoding="utf-8")
                   changed += 1
 
-          print(f"Updated {changed} personalized preview pages")
+          print(f"Updated {changed} preview pages")
 
       - name: Commit preview metadata
         run: |
@@ -127,5 +115,5 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add i
-          git commit -m "Personalize invitation preview metadata"
+          git commit -m "Use generic Oktoberfest preview title"
           git push
