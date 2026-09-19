@@ -316,7 +316,7 @@ video.addEventListener("loadedmetadata",()=>{
 
 window.addEventListener("load",()=>{fitSalute();fitHero1();fitProgram();fitScreen2();
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{fitAddress();fitHero1();fitProgram();fitScreen2()});
-fitAddress();fitAddress();armAutoScroll()});
+fitAddress();fitAddress()});
 window.addEventListener("resize",()=>{fitSalute();fitAddress();fitHero1();fitProgram();fitScreen2()});
 window.addEventListener("orientationchange",()=>setTimeout(()=>{fitSalute();fitAddress();fitHero1();fitProgram();fitScreen2()},250));
 
@@ -342,7 +342,7 @@ if(hint){
   });
 }
 
-if(document.readyState==="complete")armAutoScroll();
+
 
 requestAnimationFrame(render);
 })();
