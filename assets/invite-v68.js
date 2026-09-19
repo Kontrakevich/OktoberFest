@@ -1367,64 +1367,30 @@ requestAnimationFrame(render);
     if(!screen||screen.classList.contains("v71-ready"))return;
     const parts=getSaluteParts();
     const saluteLines=parts.map(w=>'<span class="v71-line">'+initialMarkup(w)+'</span>').join("");
-    const isBirthdayRoot=location.pathname==="/"||location.pathname.endsWith("/index.html");
-
-    if(isBirthdayRoot){
-      screen.innerHTML=
-        '<div class="v71-shell">'+
-          '<section class="v71-salute v71-group" id="v71Salute">'+saluteLines+'</section>'+
-          '<section class="v71-invite v71-group" id="v71Invite">'+
-            '<span class="v71-line">примите этот</span>'+
-            '<span class="v71-line">сайт в качестве</span>'+
-            '<span class="v71-line">подарка. Мне</span>'+
-            '<span class="v71-line">было очень</span>'+
-            '<span class="v71-line">приятно сделать</span>'+
-            '<span class="v71-line">его для вас</span>'+
-          '</section>'+
-          '<section class="v71-meta-zone">'+
-            '<div class="v71-divider" aria-hidden="true"></div>'+
-            '<div class="v71-meta" id="v71Meta">'+
-              '<span class="v71-line">С днем</span>'+
-              '<span class="v71-line">рождения!</span>'+
-            '</div>'+
-            '<div class="v71-divider" aria-hidden="true"></div>'+
-            '<div class="v71-meta" id="v71RootDate">'+
-              '<span class="v71-line v71-date">5 октября 2026</span>'+
-            '</div>'+
-          '</section>'+
-          '<section class="v71-address-wrap" aria-hidden="true" style="display:none">'+
-            '<div class="v71-address" id="v71Address">'+
-              '<p class="v71-city" id="v71City"></p>'+
-              '<p class="v71-street" id="v71Street"></p>'+
-            '</div>'+
-          '</section>'+
-        '</div>';
-    }else{
-      screen.innerHTML=
-        '<div class="v71-shell">'+
-          '<section class="v71-salute v71-group" id="v71Salute">'+saluteLines+'</section>'+
-          '<section class="v71-invite v71-group" id="v71Invite">'+
-            '<span class="v71-line">буду рад</span>'+
-            '<span class="v71-line">видеть вас</span>'+
-            '<span class="v71-line">на ежегодном</span>'+
-            '<span class="v71-line">мероприятии</span>'+
-            '<span class="v71-line v71-gold">Октоберфест</span>'+
-          '</section>'+
-          '<section class="v71-meta-zone">'+
-            '<div class="v71-divider" aria-hidden="true"></div>'+
-            '<div class="v71-meta" id="v71Meta"><span class="v71-date">7 октября,</span> <span>18:30</span></div>'+
-            '<div class="v71-divider" aria-hidden="true"></div>'+
-          '</section>'+
-          '<section class="v71-address-wrap">'+
-            '<div class="v71-address" id="v71Address">'+
-              '<a href="https://yandex.ru/maps/?text=%D0%9C%D0%9E%D0%A1%D0%9A%D0%92%D0%90%2C%20%D0%A2%D0%BA%D0%B0%D1%86%D0%BA%D0%B0%D1%8F%20%D1%83%D0%BB.%205%2C%20%D1%81%D1%82.%207" target="_blank" rel="noopener noreferrer">'+
-                '<p class="v71-city" id="v71City">МОСКВА</p>'+
-                '<p class="v71-street" id="v71Street">Ткацкая ул. 5, ст. 7</p>'+
-              '</a>'+
-            '</div>'+
-          '</section>'+
-        '</div>';
-    }
+    screen.innerHTML=
+      '<div class="v71-shell">'+
+        '<section class="v71-salute v71-group" id="v71Salute">'+saluteLines+'</section>'+
+        '<section class="v71-invite v71-group" id="v71Invite">'+
+          '<span class="v71-line">буду рад</span>'+
+          '<span class="v71-line">видеть вас</span>'+
+          '<span class="v71-line">на ежегодном</span>'+
+          '<span class="v71-line">мероприятии</span>'+
+          '<span class="v71-line v71-gold">Октоберфест</span>'+
+        '</section>'+
+        '<section class="v71-meta-zone">'+
+          '<div class="v71-divider" aria-hidden="true"></div>'+
+          '<div class="v71-meta" id="v71Meta"><span class="v71-date">7 октября,</span> <span>18:30</span></div>'+
+          '<div class="v71-divider" aria-hidden="true"></div>'+
+        '</section>'+
+        '<section class="v71-address-wrap">'+
+          '<div class="v71-address" id="v71Address">'+
+            '<a href="https://yandex.ru/maps/?text=%D0%9C%D0%9E%D0%A1%D0%9A%D0%92%D0%90%2C%20%D0%A2%D0%BA%D0%B0%D1%86%D0%BA%D0%B0%D1%8F%20%D1%83%D0%BB.%205%2C%20%D1%81%D1%82.%207" target="_blank" rel="noopener noreferrer">'+
+              '<p class="v71-city" id="v71City">МОСКВА</p>'+
+              '<p class="v71-street" id="v71Street">Ткацкая ул. 5, ст. 7</p>'+
+            '</a>'+
+          '</div>'+
+        '</section>'+
+      '</div>';
     screen.classList.add("v71-ready");
   }
 
@@ -1475,9 +1441,7 @@ requestAnimationFrame(render);
     if(!salute||!invite||!meta||!city||!street||!address)return;
 
     fitBlock(salute,".v71-line",safe*.985);
-    fitBlock(meta,".v71-line",safe*.965);
-    const rootDate=q("#v71RootDate");
-    if(rootDate)fitBlock(rootDate,".v71-line",safe*.965);
+    fitBlock(meta,null,safe*.965);
 
     const metaSize=parseFloat(getComputedStyle(meta).fontSize)||32;
     invite.style.fontSize=metaSize.toFixed(3)+"px";
