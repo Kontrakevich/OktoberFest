@@ -1337,9 +1337,33 @@ requestAnimationFrame(render);
 
   function getSaluteParts(){
     const old=q(".screen2 .salute");
-    const raw=(old?.textContent||"Уважаемый Гость").replace(/,\s*$/,"").trim();
+    if(!old)return ["Уважаемый","Гость",""];
+
+    /* Legacy layout may already contain separate .salute-line spans.
+       Read them individually so textContent cannot concatenate
+       "Уважаемый" + "Имя" + "Отчество" into one word. */
+    const legacyLines=qa(".salute-line",old)
+      .map(el=>(el.textContent||"").replace(/,\s*$/,"").trim())
+      .filter(Boolean);
+
+    if(legacyLines.length>=3){
+      return [
+        legacyLines[0],
+        legacyLines[1],
+        legacyLines.slice(2).join(" ")
+      ];
+    }
+
+    const raw=(old.textContent||"Уважаемый Гость").replace(/,\s*$/,"").trim();
     const parts=raw.split(/\s+/).filter(Boolean);
-    return parts.length?parts:["Уважаемый","Гость"];
+
+    if(parts.length>=3){
+      return [parts[0],parts[1],parts.slice(2).join(" ")];
+    }
+    if(parts.length===2){
+      return [parts[0],parts[1],""];
+    }
+    return ["Уважаемый",parts[0]||"Гость",""];
   }
 
   function build(){
