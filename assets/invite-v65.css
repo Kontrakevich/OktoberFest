@@ -2959,3 +2959,84 @@ main{
 .address-line:last-child{
   line-height:.96!important;
 }
+
+
+/* v69 — NO NESTED SCROLL, ever.
+   screen2 is a static viewport section; only the page itself scrolls. */
+.section.screen2{
+  position:relative!important;
+  height:100svh!important;
+  min-height:100svh!important;
+  max-height:100svh!important;
+  width:100%!important;
+  padding:36px!important;
+  margin:0!important;
+  box-sizing:border-box!important;
+
+  overflow:hidden!important;
+  overflow-x:hidden!important;
+  overflow-y:hidden!important;
+
+  overscroll-behavior:auto!important;
+  -webkit-overflow-scrolling:auto!important;
+  touch-action:pan-y!important;
+}
+
+.screen2-shell{
+  position:relative!important;
+  width:100%!important;
+  height:100%!important;
+  min-height:0!important;
+  max-height:100%!important;
+  margin:0!important;
+  padding:0!important;
+  box-sizing:border-box!important;
+
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:stretch!important;
+
+  overflow:hidden!important;
+  overflow-x:hidden!important;
+  overflow-y:hidden!important;
+
+  overscroll-behavior:auto!important;
+  -webkit-overflow-scrolling:auto!important;
+  touch-action:pan-y!important;
+}
+
+/* No child in screen2 may become a scroll container. */
+.screen2 .salute,
+.screen2 .invite-copy,
+.screen2 .screen-divider,
+.screen2 .program,
+.screen2 .program-row,
+.screen2 .address-footer,
+.screen2 .address{
+  overflow:visible!important;
+  overflow-x:visible!important;
+  overflow-y:visible!important;
+  max-height:none!important;
+}
+
+/* Explicitly disable any legacy scroll behavior. */
+.screen2,
+.screen2-shell{
+  scrollbar-width:none!important;
+}
+.screen2::-webkit-scrollbar,
+.screen2-shell::-webkit-scrollbar{
+  display:none!important;
+  width:0!important;
+  height:0!important;
+}
+
+/* If the browser does not support svh, use a normal viewport height,
+   still without creating a nested scroller. */
+@supports not (height:100svh){
+  .section.screen2{
+    height:100vh!important;
+    min-height:100vh!important;
+    max-height:100vh!important;
+  }
+}
