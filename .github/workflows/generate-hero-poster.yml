@@ -1,0 +1,52 @@
+name: Generate hero poster
+
+on:
+  push:
+    paths:
+      - ".github/workflows/generate-hero-poster.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  poster:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install ffmpeg if needed
+        shell: bash
+        run: |
+          if ! command -v ffmpeg >/dev/null 2>&1; then
+            sudo apt-get update
+            sudo apt-get install -y ffmpeg
+          fi
+
+      - name: Extract first video frame as WebP
+        shell: bash
+        run: |
+          mkdir -p assets
+          ffmpeg -v error -y \
+            -i oktoberfest-scroll.mp4 \
+            -vf "select=eq(n\,0),scale=1080:-2" \
+            -frames:v 1 \
+            -c:v libwebp \
+            -quality 82 \
+            -compression_level 6 \
+            assets/hero-first-frame.webp
+          ls -lh assets/hero-first-frame.webp
+
+      - name: Commit poster
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/hero-first-frame.webp
+          if git diff --cached --quiet; then
+            echo "Poster is already current."
+            exit 0
+          fi
+          git commit -m "Generate optimized hero first-frame poster"
+          git push
