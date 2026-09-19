@@ -1374,18 +1374,23 @@ requestAnimationFrame(render);
         '<div class="v71-shell">'+
           '<section class="v71-salute v71-group" id="v71Salute">'+saluteLines+'</section>'+
           '<section class="v71-invite v71-group" id="v71Invite">'+
-            '<span class="v71-line">примите этот продукт</span>'+
-            '<span class="v71-line">в качестве подарка,</span>'+
-            '<span class="v71-line">мне было очень приятно</span>'+
-            '<span class="v71-line">работать для вас</span>'+
+            '<span class="v71-line">примите этот</span>'+
+            '<span class="v71-line">сайт в качестве</span>'+
+            '<span class="v71-line">подарка. Мне</span>'+
+            '<span class="v71-line">было очень</span>'+
+            '<span class="v71-line">приятно сделать</span>'+
+            '<span class="v71-line">его для вас</span>'+
           '</section>'+
           '<section class="v71-meta-zone">'+
             '<div class="v71-divider" aria-hidden="true"></div>'+
             '<div class="v71-meta" id="v71Meta">'+
-              '<span class="v71-line v71-date">5 октября</span>'+
-              '<span class="v71-line">С днем рождения!</span>'+
+              '<span class="v71-line">С днем</span>'+
+              '<span class="v71-line">рождения!</span>'+
             '</div>'+
             '<div class="v71-divider" aria-hidden="true"></div>'+
+            '<div class="v71-meta" id="v71RootDate">'+
+              '<span class="v71-line v71-date">5 октября 2026</span>'+
+            '</div>'+
           '</section>'+
           '<section class="v71-address-wrap" aria-hidden="true" style="display:none">'+
             '<div class="v71-address" id="v71Address">'+
@@ -1470,7 +1475,9 @@ requestAnimationFrame(render);
     if(!salute||!invite||!meta||!city||!street||!address)return;
 
     fitBlock(salute,".v71-line",safe*.985);
-    fitBlock(meta,null,safe*.965);
+    fitBlock(meta,".v71-line",safe*.965);
+    const rootDate=q("#v71RootDate");
+    if(rootDate)fitBlock(rootDate,".v71-line",safe*.965);
 
     const metaSize=parseFloat(getComputedStyle(meta).fontSize)||32;
     invite.style.fontSize=metaSize.toFixed(3)+"px";
