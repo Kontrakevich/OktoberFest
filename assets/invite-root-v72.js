@@ -1382,7 +1382,7 @@ requestAnimationFrame(render);
           '<section class="v71-meta-zone">'+
             '<div class="v71-divider" aria-hidden="true"></div>'+
             '<div class="v71-meta" id="v71Meta">'+
-              '<span class="v71-line">С днём</span>'+
+              '<span class="v71-line"><span class="v71-gold">С</span> днём</span>'+
               '<span class="v71-line">рождения!</span>'+
             '</div>'+
             '<div class="v71-divider" aria-hidden="true"></div>'+
